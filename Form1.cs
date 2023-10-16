@@ -4,7 +4,10 @@ namespace contacts_management_app
     {
         public Form1()
         {
+            //Å‰‚Ìcommit
             InitializeComponent();
         }
+
+
     }
 }
