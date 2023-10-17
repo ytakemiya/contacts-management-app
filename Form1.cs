@@ -18,6 +18,21 @@ namespace contacts_management_app
 
         }
 
+        private void AddButton_Click(object sender, EventArgs e)
+        {
+         
+        }
+
+        private void ExportButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ImportButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
         private void button1_Click(object sender, EventArgs e)
         {
 
