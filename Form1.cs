@@ -7,12 +7,17 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using TextBox = System.Windows.Forms.TextBox;
 using System.Data;
 using contacts_management_app.contactClass;
+using System.Text.RegularExpressions;
+using System.Security.Cryptography;
 
 namespace contacts_management_app
 {
     public partial class Top : Form
     {
+        private Form form2;
+
         public Top()
+
         {
             //最初のcommit
             InitializeComponent();
@@ -27,11 +32,9 @@ namespace contacts_management_app
         {
             //画面遷移ーcontact_saveButton
             //Form1を表示
-            Form f1 = new Form();
-            f1.Visible = true;
-
-            //画面を閉じる
-            this.Close();
+            //Form2 form2 = new Form2();
+            //form2.Show();
+            form2.Show();
         }
 
         private void ExportButton_Click(object sender, EventArgs e)
@@ -55,7 +58,7 @@ namespace contacts_management_app
 
             //入力が空か判断する
             //入力が空の場合
-            if (isInputEmpty(textBox1))
+            if (String.IsNullOrEmpty(textBox1.Text))
             {
                 //  連絡先全件表示
                 ShowAllContacts();
@@ -67,8 +70,14 @@ namespace contacts_management_app
             //電話番号の場合は
             // 電話番号で連絡先検索
 
+            else if (Regex.IsMatch(textBox1.Text, @"^[0-9]+$"))
+            {
+
+            }
+
             //入力が文字列のみ場合は
             //　名前で連絡先検索
+
 
         }
         private bool isInputEmpty(TextBox inputTextboxt)
@@ -83,6 +92,17 @@ namespace contacts_management_app
             //tableにbindする
 
             //return 
+
+            // データを追加
+            ContactList contactlist = new ContactList();
+            dataGridView1.DataSource = contactlist.Data;
+
+            // カラム名を指定
+            dataGridView1.Columns[0].HeaderText = "ID";
+            dataGridView1.Columns[1].HeaderText = "NAME";
+            dataGridView1.Columns[2].HeaderText = "TEL";
+            dataGridView1.Columns[3].HeaderText = "MAIL";
+            dataGridView1.Columns[4].HeaderText = "MEMO";
         }
 
         private void textBox4_button_TextChanged(object sender, EventArgs e)
@@ -117,32 +137,12 @@ namespace contacts_management_app
 
         private void Top_Load(object sender, EventArgs e)
         {
-            // データを追加
-            ContactList contactlist = new ContactList();
-            dataGridView1.DataSource = contactlist.Data;
+            //ShowAllContacts();
+            form2 = new Form2();
+            form2.TopLevel = false;
+            form2.Dock = DockStyle.Fill;
+            panel6.Controls.Add(form2);
 
-            // カラム名を指定
-            dataGridView1.Columns[0].HeaderText = "ID";
-            dataGridView1.Columns[1].HeaderText = "NAME";
-            dataGridView1.Columns[2].HeaderText = "TEL";
-            dataGridView1.Columns[3].HeaderText = "MAIL";
-            dataGridView1.Columns[4].HeaderText = "MEMO";
-            //DataTable table = new DataTable("Table");
-
-            // カラム名の追加
-            //table.Columns.Add("ID");
-            //table.Columns.Add("NAME");
-            //table.Columns.Add("TEL");
-            //table.Columns.Add("MAIL");
-            //table.Columns.Add("MEMO");
-
-            // Rows.Addメソッドを使ってデータを追加
-            //table.Rows.Add("1", "武宮勇貴", "09092390645", "newchallenge3625@gmaail.com", "特になし");
-            //table.Rows.Add("2", "鈴木二郎", "09023659876", "korin2543@gmail.com", "明日休み");
-            //table.Rows.Add("3", "佐藤三郎", "07056439745", "tokutoku0921@gmail.com", "課長代理");
-            //table.Rows.Add("4", "三池卓三", "08043216674", "meizi0645@gmail.com", "土日休み");
-
-            //dataGridView1.DataSource = table;
         }
 
 
@@ -180,7 +180,6 @@ namespace contacts_management_app
 
 
         }
-
 
     }
 

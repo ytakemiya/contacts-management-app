@@ -32,6 +32,7 @@
             textBox1 = new TextBox();
             AddButton = new Button();
             panel3 = new Panel();
+            panel5 = new Panel();
             label4 = new Label();
             Tellabel = new Label();
             label3 = new Label();
@@ -46,6 +47,7 @@
             panel2 = new Panel();
             panel4 = new Panel();
             dataGridView1 = new DataGridView();
+            panel6 = new Panel();
             panel3.SuspendLayout();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
@@ -86,6 +88,7 @@
             // panel3
             // 
             panel3.BackColor = SystemColors.ActiveCaption;
+            panel3.Controls.Add(panel5);
             panel3.Controls.Add(label4);
             panel3.Controls.Add(textBox1);
             panel3.Controls.Add(SearchButton);
@@ -94,6 +97,15 @@
             panel3.Name = "panel3";
             panel3.Size = new Size(647, 70);
             panel3.TabIndex = 10;
+            // 
+            // panel5
+            // 
+            panel5.BackColor = SystemColors.Highlight;
+            panel5.ForeColor = Color.Peru;
+            panel5.Location = new Point(6, 91);
+            panel5.Name = "panel5";
+            panel5.Size = new Size(638, 377);
+            panel5.TabIndex = 13;
             // 
             // label4
             // 
@@ -207,7 +219,7 @@
             panel2.Controls.Add(label3);
             panel2.Location = new Point(0, 71);
             panel2.Name = "panel2";
-            panel2.Size = new Size(160, 379);
+            panel2.Size = new Size(160, 397);
             panel2.TabIndex = 21;
             panel2.Paint += panel2_Paint_1;
             // 
@@ -222,7 +234,6 @@
             // 
             // dataGridView1
             // 
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView1.Location = new Point(160, 91);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.RowTemplate.Height = 25;
@@ -230,11 +241,20 @@
             dataGridView1.TabIndex = 23;
             dataGridView1.CellContentClick += dataGridView1_CellContentClick_2;
             // 
+            // panel6
+            // 
+            panel6.BackColor = SystemColors.AppWorkspace;
+            panel6.Location = new Point(160, 91);
+            panel6.Name = "panel6";
+            panel6.Size = new Size(641, 377);
+            panel6.TabIndex = 24;
+            // 
             // Top
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 468);
+            Controls.Add(panel6);
             Controls.Add(dataGridView1);
             Controls.Add(panel4);
             Controls.Add(panel2);
@@ -280,5 +300,7 @@
         private Panel panel2;
         private Panel panel4;
         private DataGridView dataGridView1;
+        private Panel panel5;
+        private Panel panel6;
     }
 }
