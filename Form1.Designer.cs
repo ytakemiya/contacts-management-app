@@ -248,12 +248,13 @@
             panel6.Name = "panel6";
             panel6.Size = new Size(641, 377);
             panel6.TabIndex = 24;
+            panel6.Paint += panel6_Paint;
             // 
             // Top
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 468);
+            ClientSize = new Size(800, 464);
             Controls.Add(panel6);
             Controls.Add(dataGridView1);
             Controls.Add(panel4);

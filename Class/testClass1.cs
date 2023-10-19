@@ -23,10 +23,10 @@ namespace contacts_management_app.contactClass
         public ContactList()
         {
             Data = new List<Contacts> {
-                new Contacts { ID=1, NAME="武宮勇貴", TEL="09092390645", MAIL="newchallenge3625@gmaail.com", MEMO="特になし" },
+                new Contacts { ID=1, NAME="武宮勇貴", TEL="09092390645", MAIL="newchallenge3625@gmaail.com", MEMO="特になし"},
                 new Contacts { ID=2, NAME="鈴木二郎", TEL="09023659876", MAIL="korin2543@gmail.com", MEMO="明日休み" },
                 new Contacts { ID=3, NAME="佐藤三郎", TEL="07056439745", MAIL="tokutoku0921@gmail.com", MEMO="課長代理" },
-                new Contacts { ID=4, NAME="佐藤三郎", TEL="08043216674", MAIL="meizi0645@gmail.com", MEMO="土日休み" },
+                new Contacts { ID=4, NAME="安田俊哉", TEL="08043216674", MAIL="meizi0645@gmail.com", MEMO="土日休み" },
             };
 
         }
