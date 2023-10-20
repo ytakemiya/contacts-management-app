@@ -1,1 +1,1 @@
-﻿SELECT * FROM contacts WHERE TEL LIKE '%9234%'
+﻿

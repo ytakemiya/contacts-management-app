@@ -20,6 +20,10 @@ namespace contacts_management_app.Class
             //var connectionString = ConfigurationManager.ConnectionStrings["sqlsvr"].ConnectionString;
             var connectionString = "Data Source=DSP417;Initial Catalog=test_take;User ID=sql_takemiya;Password=sql_takemiya";
 
+           //Update()
+           //Insert()
+         // Delete();
+
             using (var connection = new SqlConnection(connectionString))
             using (var command = connection.CreateCommand())
             {
@@ -48,6 +52,38 @@ namespace contacts_management_app.Class
             }
 
             return table;
+        }
+        public void InsertData() {
+            //接続文字列
+            var connectionString = "Data Source=DSP417;Initial Catalog=test_take;User ID=sql_takemiya;Password=sql_takemiya";
+           
+            using (var connection = new SqlConnection(connectionString))
+            using (var command = connection.CreateCommand())
+            {
+                try
+                {                 
+                    // データベースの接続開始
+                    connection.Open();                    
+                        
+                    command.CommandText = @"INSERT INTO T_USER (ID, PASSWORD, ROLE_NAME) VALUES (@ID, @PASSWORD, @ROLE_NAME)";
+                    //command.Parameters.Add(new SqlParameter("@ID", id));
+                    //command.Parameters.Add(new SqlParameter("@PASSWORD", password));
+                    //command.Parameters.Add(new SqlParameter("@ROLE_NAME", role));
+
+                    // SQLの実行
+                    command.ExecuteNonQuery();
+                }
+                catch (Exception exception)
+                {
+                    Console.WriteLine(exception.Message);
+                    throw;
+                }
+                finally
+                {
+                    // データベースの接続終了
+                    connection.Close();
+                }
+            }     
         }
     }
 }

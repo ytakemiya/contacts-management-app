@@ -27,7 +27,6 @@ namespace contacts_management_app
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-            textBox1.MaxLength = 12;//テキストボックスの最大文字数を設定する
         }
 
         private void AddButton_Click(object sender, EventArgs e)
@@ -36,7 +35,10 @@ namespace contacts_management_app
             //Form1を表示
             //Form2 form2 = new Form2();
             //form2.ShowDialog();
+            //form2.Show();
+            ScreenTransitionTo(panel6);
             form2.Show();
+            panel6.Show();
         }
 
         private void ExportButton_Click(object sender, EventArgs e)
@@ -54,6 +56,8 @@ namespace contacts_management_app
             //リストを全表示する
             //入力が空か判断する
             //入力が空の場合
+            //UserControl2.Visibile = false;
+
             if (String.IsNullOrEmpty(textBox1.Text))
             {
                 //  連絡先全件表示
@@ -75,10 +79,11 @@ namespace contacts_management_app
             //入力が文字列のみ場合は
             //　名前で連絡先検索
             //else それ以外で
-            else (String.Contains(textBox1.Text(""))
-            { 
+            else
+            {
+                //textBox1.Text = Select();
                 DBaccesser dbA = new DBaccesser();
-                DataTable dt = dbA.GetData($"SELECT * FROM contacts WHERE TEL LIKE '%{textBox1.Text}%'");
+                DataTable dt = dbA.GetData($"SELECT * FROM contacts WHERE NAME LIKE '%{textBox1.Text}%'");
                 dataGridView1.DataSource = dt;
             }
 
@@ -176,13 +181,19 @@ namespace contacts_management_app
         private void Top_Load(object sender, EventArgs e)
         {
             ShowAllContacts();
-            form2 = new Form2();
+            form2 = new UserControl2();
             form2.TopLevel = false;
             form2.Dock = DockStyle.Fill;
             panel6.Controls.Add(form2);
+            ScreenTransitionTo(dataGridView1);
+
 
         }
 
+        private void ScreenTransitionTo(Control control)
+        {
+            control.BringToFront();
+        }
 
 
         private void panel2_Paint(object sender, PaintEventArgs e)

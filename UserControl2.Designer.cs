@@ -1,6 +1,6 @@
 ﻿namespace contacts_management_app
 {
-    partial class Form2
+    partial class UserControl2
     {
         /// <summary>
         /// Required designer variable.
@@ -34,9 +34,9 @@
             label3 = new Label();
             label2 = new Label();
             label1 = new Label();
-            textBox9 = new TextBox();
-            textBox8 = new TextBox();
-            textBox7 = new TextBox();
+            MAILtextBox = new TextBox();
+            TELtextBox = new TextBox();
+            NAMEtextBox = new TextBox();
             label4 = new Label();
             textBox1 = new TextBox();
             panel1.SuspendLayout();
@@ -50,6 +50,7 @@
             CancelButton.TabIndex = 0;
             CancelButton.Text = "キャンセル";
             CancelButton.UseVisualStyleBackColor = true;
+            CancelButton.Click += CancelButton_Click;
             // 
             // SaveButton
             // 
@@ -59,6 +60,7 @@
             SaveButton.TabIndex = 1;
             SaveButton.Text = "保存";
             SaveButton.UseVisualStyleBackColor = true;
+            SaveButton.Click += SaveButton_Click;
             // 
             // panel1
             // 
@@ -66,9 +68,9 @@
             panel1.Controls.Add(label3);
             panel1.Controls.Add(label2);
             panel1.Controls.Add(label1);
-            panel1.Controls.Add(textBox9);
-            panel1.Controls.Add(textBox8);
-            panel1.Controls.Add(textBox7);
+            panel1.Controls.Add(MAILtextBox);
+            panel1.Controls.Add(TELtextBox);
+            panel1.Controls.Add(NAMEtextBox);
             panel1.Location = new Point(0, 116);
             panel1.Name = "panel1";
             panel1.Size = new Size(614, 149);
@@ -101,26 +103,37 @@
             label1.TabIndex = 7;
             label1.Text = "名前 【全角文字】 必須";
             // 
-            // textBox9
+            // MAILtextBox
             // 
-            textBox9.Location = new Point(171, 105);
-            textBox9.Name = "textBox9";
-            textBox9.Size = new Size(147, 23);
-            textBox9.TabIndex = 6;
+            MAILtextBox.Location = new Point(171, 105);
+            MAILtextBox.MaxLength = 30;
+            MAILtextBox.Name = "MAILtextBox";
+            MAILtextBox.Size = new Size(147, 23);
+            MAILtextBox.TabIndex = 6;
+            MAILtextBox.TextChanged += MAILtextBox_TextChanged;
+            MAILtextBox.Validating += MAILtextBox_Validating;
+            MAILtextBox.Validated += MAILtextBox_Validated;
             // 
-            // textBox8
+            // TELtextBox
             // 
-            textBox8.Location = new Point(171, 58);
-            textBox8.Name = "textBox8";
-            textBox8.Size = new Size(147, 23);
-            textBox8.TabIndex = 6;
+            TELtextBox.ImeMode = ImeMode.Disable;
+            TELtextBox.Location = new Point(171, 58);
+            TELtextBox.MaxLength = 15;
+            TELtextBox.Name = "TELtextBox";
+            TELtextBox.ShortcutsEnabled = false;
+            TELtextBox.Size = new Size(147, 23);
+            TELtextBox.TabIndex = 6;
+            TELtextBox.TextChanged += TELtextBox_TextChanged;
+            TELtextBox.KeyPress += TELtextBox_KeyPress;
             // 
-            // textBox7
+            // NAMEtextBox
             // 
-            textBox7.Location = new Point(171, 18);
-            textBox7.Name = "textBox7";
-            textBox7.Size = new Size(147, 23);
-            textBox7.TabIndex = 6;
+            NAMEtextBox.Location = new Point(171, 18);
+            NAMEtextBox.MaxLength = 12;
+            NAMEtextBox.Name = "NAMEtextBox";
+            NAMEtextBox.Size = new Size(147, 23);
+            NAMEtextBox.TabIndex = 6;
+            NAMEtextBox.TextChanged += NAMEtextBox_TextChanged;
             // 
             // label4
             // 
@@ -141,7 +154,7 @@
             textBox1.TabIndex = 4;
             textBox1.TextChanged += textBox1_TextChanged;
             // 
-            // Form2
+            // UserControl2
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -151,7 +164,7 @@
             Controls.Add(panel1);
             Controls.Add(SaveButton);
             Controls.Add(CancelButton);
-            Name = "Form2";
+            Name = "UserControl2";
             Text = "連絡先追加";
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
@@ -164,9 +177,9 @@
         private Button CancelButton;
         private Button SaveButton;
         private Panel panel1;
-        private TextBox textBox9;
-        private TextBox textBox8;
-        private TextBox textBox7;
+        private TextBox MAILtextBox;
+        private TextBox TELtextBox;
+        private TextBox NAMEtextBox;
         private Label label1;
         private Label label3;
         private Label label2;
