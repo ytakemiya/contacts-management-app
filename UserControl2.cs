@@ -3,13 +3,18 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.Common;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Transactions;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+//using System.Collections.Generic;
 
 namespace contacts_management_app
 {
@@ -46,24 +51,53 @@ namespace contacts_management_app
         }
 
         private void SaveButton_Click(object sender, EventArgs e)
-        {
-            //DBから連絡先データを持ってくる
-            //DBから連絡先データを持ってくる
-            //DBaccesser dbA = new DBaccesser();
-            //DataTable dt = dbA.GetData($"SELECT * FROM contacts WHERE TEL LIKE '%{textBox1.Text}%'");
-            //dataGridView1.DataSource = dt;
-            DBaccesser dbA = new DBaccesser();
-            //DataTable dt = dbA.GetData($"INSERT INTO contacts(NAME, TEL, MAIL, MEMO) VALUES(NAME='徳永浩二', TEL=09023458765, MAIL=mamorniriu@gmail.com, MEMO='特になし'));
-            dbA.GetData($"INSERT INTO contacts VALUES(5, '徳永浩二', '09023458765', 'mamo1376@gmail.com', '特になし')");
+        { 
+            string query = String.Format("INSERT INTO [contacts] ( NAME, TEL, MAIL, MEMO ) VALUES ( '{0}','{1}','{2}','{3}' );", NAMEtextBox.Text, TELtextBox, MAILtextBox, MEMOtextBox);
+            
+            using (SqlConnection con = new SqlConnection("Data Source=ServerName; Initial Catalog=DatabaseName; uid=UserName; pwd=Password"))
+            {
+                try
+                {
+                    //データベースの接続
+                    con.Open();
 
+                    using (var transaction = con.BeginTransaction())
+                    using (var command = new SqlCommand() { Connection = con, Transaction = transaction })
+                    {
+                        try
+                        {
+                           // コマンドのセット
+                            command.CommandText = query;
+                            //コマンドの実行
+                            command.ExecuteNonQuery();
+                            //コミット
+                            transaction.Commit();
+                        }
+                        catch
+                        {
+                            //ロールバック
+                            transaction.Rollback();
+                            throw;
+                        }
+                    }
+                }
+                catch (Exception exception)
+                {
+                    Console.WriteLine(exception.Message);
+                    throw;
+                }
+                finally
+                {
+                    // データベースの接続終了
+                    con.Close();
+                }
+                    
+            }
         }
-
         private void NAMEtextBox_TextChanged(object sender, EventArgs e)
         {
 
-
         }
-
         private void TELtextBox_TextChanged(object sender, EventArgs e)
         {
             // 0-9のみ
@@ -90,7 +124,6 @@ namespace contacts_management_app
                 e.Handled = true;
             }
         }
-
         private void MAILtextBox_Validating(object sender, CancelEventArgs e)
         {
             //string text = MAILtextBox.Text;
@@ -116,7 +149,7 @@ namespace contacts_management_app
 
         private void CancelButton_Click(object sender, EventArgs e)
         {
-
+            
         }
     }
 }
