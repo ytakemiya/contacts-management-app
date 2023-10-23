@@ -47,14 +47,14 @@ namespace contacts_management_app
 
         private void SaveButton_Click(object sender, EventArgs e)
         {
-            // ErrorProviderのインスタンス生成
-            //ErrorProvider ep = new ErrorProvider();
-            //InputCheck.errorClear(ep);
-
-            // 必須チェックの確認
-            //InputCheck.isString(ep, "必須チェック", NAMEtextBox, true, 10);
-
-
+            //DBから連絡先データを持ってくる
+            //DBから連絡先データを持ってくる
+            //DBaccesser dbA = new DBaccesser();
+            //DataTable dt = dbA.GetData($"SELECT * FROM contacts WHERE TEL LIKE '%{textBox1.Text}%'");
+            //dataGridView1.DataSource = dt;
+            DBaccesser dbA = new DBaccesser();
+            //DataTable dt = dbA.GetData($"INSERT INTO contacts(NAME, TEL, MAIL, MEMO) VALUES(NAME='徳永浩二', TEL=09023458765, MAIL=mamorniriu@gmail.com, MEMO='特になし'));
+            dbA.GetData($"INSERT INTO contacts VALUES(5, '徳永浩二', '09023458765', 'mamo1376@gmail.com', '特になし')");
 
         }
 
@@ -116,7 +116,7 @@ namespace contacts_management_app
 
         private void CancelButton_Click(object sender, EventArgs e)
         {
-            
+
         }
     }
 }

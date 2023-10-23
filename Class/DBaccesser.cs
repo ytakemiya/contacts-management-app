@@ -65,7 +65,7 @@ namespace contacts_management_app.Class
                     // データベースの接続開始
                     connection.Open();                    
                         
-                    command.CommandText = @"INSERT INTO T_USER (ID, PASSWORD, ROLE_NAME) VALUES (@ID, @PASSWORD, @ROLE_NAME)";
+                    command.CommandText = @"INSERT INTO T_USER (ID, NAME, TEL, MAIL, MEMO) VALUES (@ID, @NAME, @TEL, @MAIL, @MEMO)";
                     //command.Parameters.Add(new SqlParameter("@ID", id));
                     //command.Parameters.Add(new SqlParameter("@PASSWORD", password));
                     //command.Parameters.Add(new SqlParameter("@ROLE_NAME", role));

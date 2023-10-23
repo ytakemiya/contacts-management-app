@@ -38,7 +38,7 @@
             TELtextBox = new TextBox();
             NAMEtextBox = new TextBox();
             label4 = new Label();
-            textBox1 = new TextBox();
+            MEMOtextBox = new TextBox();
             panel1.SuspendLayout();
             SuspendLayout();
             // 
@@ -73,7 +73,7 @@
             panel1.Controls.Add(NAMEtextBox);
             panel1.Location = new Point(0, 116);
             panel1.Name = "panel1";
-            panel1.Size = new Size(614, 149);
+            panel1.Size = new Size(614, 334);
             panel1.TabIndex = 2;
             // 
             // label3
@@ -81,27 +81,27 @@
             label3.AutoSize = true;
             label3.Location = new Point(15, 108);
             label3.Name = "label3";
-            label3.Size = new Size(135, 15);
+            label3.Size = new Size(137, 15);
             label3.TabIndex = 8;
-            label3.Text = "メール 【半角英数字】 必須";
+            label3.Text = "MAIL 【半角英数字】 必須";
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(10, 66);
+            label2.Location = new Point(21, 66);
             label2.Name = "label2";
-            label2.Size = new Size(145, 15);
+            label2.Size = new Size(115, 15);
             label2.TabIndex = 3;
-            label2.Text = "電話番号 【半角数字】 必須";
+            label2.Text = "TEL 【半角数字】 必須";
             // 
             // label1
             // 
             label1.AutoSize = true;
             label1.Location = new Point(15, 21);
             label1.Name = "label1";
-            label1.Size = new Size(121, 15);
+            label1.Size = new Size(131, 15);
             label1.TabIndex = 7;
-            label1.Text = "名前 【全角文字】 必須";
+            label1.Text = "NAME 【全角文字】 必須";
             // 
             // MAILtextBox
             // 
@@ -128,7 +128,7 @@
             // 
             // NAMEtextBox
             // 
-            NAMEtextBox.Location = new Point(171, 18);
+            NAMEtextBox.Location = new Point(171, 21);
             NAMEtextBox.MaxLength = 12;
             NAMEtextBox.Name = "NAMEtextBox";
             NAMEtextBox.Size = new Size(147, 23);
@@ -145,21 +145,21 @@
             label4.Text = "（注）20文字未満まで";
             label4.Click += label4_Click;
             // 
-            // textBox1
+            // MEMOtextBox
             // 
-            textBox1.BackColor = Color.Wheat;
-            textBox1.Location = new Point(146, 286);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(306, 23);
-            textBox1.TabIndex = 4;
-            textBox1.TextChanged += textBox1_TextChanged;
+            MEMOtextBox.BackColor = Color.Wheat;
+            MEMOtextBox.Location = new Point(146, 286);
+            MEMOtextBox.Name = "MEMOtextBox";
+            MEMOtextBox.Size = new Size(306, 23);
+            MEMOtextBox.TabIndex = 4;
+            MEMOtextBox.TextChanged += textBox1_TextChanged;
             // 
             // UserControl2
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(615, 450);
-            Controls.Add(textBox1);
+            Controls.Add(MEMOtextBox);
             Controls.Add(label4);
             Controls.Add(panel1);
             Controls.Add(SaveButton);
@@ -184,6 +184,6 @@
         private Label label3;
         private Label label2;
         private Label label4;
-        private TextBox textBox1;
+        private TextBox MEMOtextBox;
     }
 }

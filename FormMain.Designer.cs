@@ -248,8 +248,8 @@
             panel6.Name = "panel6";
             panel6.Size = new Size(641, 377);
             panel6.TabIndex = 24;
-            panel6.Paint += panel6_Paint;
             panel6.Visible = false;
+            panel6.Paint += panel6_Paint;
             // 
             // Top
             // 
