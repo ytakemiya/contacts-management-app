@@ -6,6 +6,7 @@ using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -13,6 +14,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Transactions;
 using System.Windows.Forms;
+using System.Xml.Linq;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 //using System.Collections.Generic;
 
@@ -20,6 +22,8 @@ namespace contacts_management_app
 {
     public partial class UserControl2 : Form
     {
+        public object ErrorProvider1 { get; private set; }
+
         public UserControl2()
         {
             InitializeComponent();
@@ -51,13 +55,16 @@ namespace contacts_management_app
         }
 
         private void SaveButton_Click(object sender, EventArgs e)
-        { 
-            string query = String.Format("INSERT INTO [contacts] ( NAME, TEL, MAIL, MEMO ) VALUES ( '{0}','{1}','{2}','{3}' );", NAMEtextBox.Text, TELtextBox, MAILtextBox, MEMOtextBox);
-            
-            using (SqlConnection con = new SqlConnection("Data Source=ServerName; Initial Catalog=DatabaseName; uid=UserName; pwd=Password"))
+        {
+            string query = String.Format("INSERT INTO [contacts] ( NAME, TEL, MAIL, MEMO ) VALUES ( '{0}','{1}','{2}','{3}' );", NAMEtextBox.Text, TELtextBox.Text, MAILtextBox.Text, MEMOtextBox.Text);
+            // 接続文字列を指定してデータベースを指定
+            //using (SqlConnection con = new SqlConnection("Data Source=DSP417; Initial Catalog=test_take; uid=sql_takemiya; pwd=sql_takemiya"))
+            SqlConnection con = new SqlConnection("Data Source=DSP417; Initial Catalog=test_take; uid=sql_takemiya; pwd=sql_takemiya");
             {
+
                 try
                 {
+
                     //データベースの接続
                     con.Open();
 
@@ -66,20 +73,44 @@ namespace contacts_management_app
                     {
                         try
                         {
-                           // コマンドのセット
+
+
+                            // コマンドのセット
                             command.CommandText = query;
                             //コマンドの実行
                             command.ExecuteNonQuery();
                             //コミット
                             transaction.Commit();
+
+                            MessageBox.Show("保存しますか？");
+
+
+                            DialogResult result = MessageBox.Show("保存しますか？", "確認", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                            if (result == DialogResult.Yes)
+                            {
+                                StatusText.Text = "保存しました"; //変更
+                            }
+                            else
+                            {
+                                StatusText.Text = "キャンセルしました"; //←変更
+                            }
+
+
                         }
                         catch
                         {
+
                             //ロールバック
                             transaction.Rollback();
                             throw;
                         }
                     }
+                }
+
+                catch (SqlException sqlex)
+                {
+                    Console.WriteLine(sqlex.Message);
+                    throw;
                 }
                 catch (Exception exception)
                 {
@@ -88,12 +119,14 @@ namespace contacts_management_app
                 }
                 finally
                 {
-                    // データベースの接続終了
+
                     con.Close();
                 }
-                    
+
             }
         }
+
+
         private void NAMEtextBox_TextChanged(object sender, EventArgs e)
         {
 
@@ -108,6 +141,7 @@ namespace contacts_management_app
         {
             // 文字列の先頭から末尾までが、英数字のみとマッチするかを調べる。
             //return (Regex.IsMatch(Text, @"^[0-9a-zA-Z]+$"));
+
         }
 
         private void TELtextBox_KeyPress(object sender, KeyPressEventArgs e)
@@ -126,16 +160,18 @@ namespace contacts_management_app
         }
         private void MAILtextBox_Validating(object sender, CancelEventArgs e)
         {
-            //string text = MAILtextBox.Text;
+            string text = MAILtextBox.Text;
             // 空白の場合はそのまま
-            //if (text.Length == 0)
-            return;
+            if (text.Length == 0)
+                return;
 
             // ひらがなと空白のみ
-            //Regex rx = new Regex(@"^[^@\s]+[@]([^.\s]+[.]){1,}[^.\s]+$");
-            //if (!rx.IsMatch(text))
+            Regex rx = new Regex(@"^[^@\s]+[@]([^.\s]+[.]){1,}[^.\s]+$");
+            if (!rx.IsMatch(text))
             {
-                //this.errorProvider1.SetError(MAILtextBox, "正しくないメールアドレスの形式です");
+
+                // _ = ErrorProvider1.SetError(MAILtextBox, "正しくないメールアドレスの形式です");
+
                 // e.Cancel = true;
 
             }
@@ -149,7 +185,23 @@ namespace contacts_management_app
 
         private void CancelButton_Click(object sender, EventArgs e)
         {
-            
+            //画面遷移
+            //ダイアログの戻り値をキャンセルに設定
+            this.DialogResult = DialogResult.Cancel;
+
+            //ダイアログを閉じる
+            this.Close();
+
+        }
+        private void dataGridView1(object sender, MouseEventArgs e)
+        {
+            return;
+
+        }
+
+        private void toolStripStatusLabel1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -43,8 +43,68 @@ namespace contacts_management_app
 
         private void ExportButton_Click(object sender, EventArgs e)
         {
+            public void ConvertDataTableToCsv(
+                DataTable dt, string csvPath, bool writeHeader)
+            {
+
+                //CSVファイルに書き込むときに使うEncoding
+                System.Text.Encoding enc =
+                System.Text.Encoding.GetEncoding("Shift_JIS");
+
+                //書き込むファイルを開く
+                System.IO.StreamWriter sr =
+                new System.IO.StreamWriter(csvPath, false, enc);
+
+                int colCount = dt.Columns.Count;
+                int lastColIndex = colCount - 1;
+                //ヘッダを書き込む
+                if (writeHeader)
+                {
+                    for (int i = 0; i < colCount; i++)
+                    {
+                        //ヘッダの取得
+                        string field = dt.Columns[i].Caption;
+                        //"で囲む
+                        field = EncloseDoubleQuotesIfNeed(field);
+                        //フィールドを書き込む
+                        sr.Write(field);
+                        //カンマを書き込む
+                        if (lastColIndex > i)
+                        {
+                            sr.Write(',');
+                        }
+                    }
+                    //改行する
+                    sr.Write("\r\n");
+                }
+                //レコードを書き込む
+                foreach (DataRow row in dt.Rows)
+                {
+                    for (int i = 0; i < colCount; i++)
+                    {
+                        //フィールドの取得
+                        string field = row[i].ToString();
+                        //"で囲む
+                        field = EncloseDoubleQuotesIfNeed(field);
+                        //フィールドを書き込む
+                        sr.Write(field);
+                        //カンマを書き込む
+                        if (lastColIndex > i)
+                        {
+                            sr.Write(',');
+                        }
+                    }
+                    //改行する
+                    sr.Write("\r\n");
+                }
+
+                //閉じる
+                sr.Close();
+            }
+
 
         }
+    
 
 
 
@@ -222,6 +282,11 @@ namespace contacts_management_app
         }
 
         private void panel6_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void StatusText_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
 
         }
