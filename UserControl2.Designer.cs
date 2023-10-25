@@ -173,7 +173,7 @@
             label4.Size = new Size(186, 25);
             label4.TabIndex = 3;
             label4.Text = "（注）20文字未満まで";
-            label4.Click += label4_Click;
+            label4.Click += Label4_Click;
             // 
             // MEMOtextBox
             // 
@@ -183,7 +183,7 @@
             MEMOtextBox.Name = "MEMOtextBox";
             MEMOtextBox.Size = new Size(435, 31);
             MEMOtextBox.TabIndex = 4;
-            MEMOtextBox.TextChanged += textBox1_TextChanged;
+            MEMOtextBox.TextChanged += TextBox1_TextChanged;
             // 
             // UserControl2
             // 

@@ -22,6 +22,7 @@ namespace contacts_management_app
 {
     public partial class UserControl2 : Form
     {
+        public Form form2;
         public object ErrorProvider1 { get; private set; }
 
         public UserControl2()
@@ -31,25 +32,24 @@ namespace contacts_management_app
             this.Text = "";
         }
 
-
         enum StrKind
         {
-            mix, //全角半角混在
-            full, //全角のみ
-            half //半角のみ
+            mix,    // 全角半角混在
+            full,   // 全角のみ
+            half    // 半角のみ
         };
 
-        private void textBox3_TextChanged(object sender, EventArgs e)
+        private void TextBox3_TextChanged(object sender, EventArgs e)
         {
 
         }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
+        private void TextBox1_TextChanged(object sender, EventArgs e)
         {
 
         }
 
-        private void label4_Click(object sender, EventArgs e)
+        private void Label4_Click(object sender, EventArgs e)
         {
 
         }
@@ -59,51 +59,42 @@ namespace contacts_management_app
             string query = String.Format("INSERT INTO [contacts] ( NAME, TEL, MAIL, MEMO ) VALUES ( '{0}','{1}','{2}','{3}' );", NAMEtextBox.Text, TELtextBox.Text, MAILtextBox.Text, MEMOtextBox.Text);
             // 接続文字列を指定してデータベースを指定
             //using (SqlConnection con = new SqlConnection("Data Source=DSP417; Initial Catalog=test_take; uid=sql_takemiya; pwd=sql_takemiya"))
-            SqlConnection con = new SqlConnection("Data Source=DSP417; Initial Catalog=test_take; uid=sql_takemiya; pwd=sql_takemiya");
+            SqlConnection con = new("Data Source=DSP417; Initial Catalog=test_take; uid=sql_takemiya; pwd=sql_takemiya");
             {
-
                 try
                 {
-
                     //データベースの接続
                     con.Open();
 
-                    using (var transaction = con.BeginTransaction())
-                    using (var command = new SqlCommand() { Connection = con, Transaction = transaction })
+                    using var transaction = con.BeginTransaction();
+                    using var command = new SqlCommand() { Connection = con, Transaction = transaction };
+                    try
                     {
-                        try
+                        // コマンドのセット
+                        command.CommandText = query;
+                        //コマンドの実行
+                        command.ExecuteNonQuery();
+                        //コミット
+                        transaction.Commit();
+
+                        MessageBox.Show("保存しますか？");
+
+                        DialogResult result = MessageBox.Show("保存しますか？", "確認", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                        if (result == DialogResult.Yes)
                         {
-
-
-                            // コマンドのセット
-                            command.CommandText = query;
-                            //コマンドの実行
-                            command.ExecuteNonQuery();
-                            //コミット
-                            transaction.Commit();
-
-                            MessageBox.Show("保存しますか？");
-
-
-                            DialogResult result = MessageBox.Show("保存しますか？", "確認", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                            if (result == DialogResult.Yes)
-                            {
-                                StatusText.Text = "保存しました"; //変更
-                            }
-                            else
-                            {
-                                StatusText.Text = "キャンセルしました"; //←変更
-                            }
-
-
+                            StatusText.Text = "保存しました"; //変更
                         }
-                        catch
+                        else
                         {
-
-                            //ロールバック
-                            transaction.Rollback();
-                            throw;
+                            StatusText.Text = "キャンセルしました"; //←変更
                         }
+                    }
+                    catch
+                    {
+
+                        //ロールバック
+                        transaction.Rollback();
+                        throw;
                     }
                 }
 
@@ -119,7 +110,6 @@ namespace contacts_management_app
                 }
                 finally
                 {
-
                     con.Close();
                 }
 
@@ -158,6 +148,7 @@ namespace contacts_management_app
                 e.Handled = true;
             }
         }
+
         private void MAILtextBox_Validating(object sender, CancelEventArgs e)
         {
             string text = MAILtextBox.Text;
@@ -166,7 +157,7 @@ namespace contacts_management_app
                 return;
 
             // ひらがなと空白のみ
-            Regex rx = new Regex(@"^[^@\s]+[@]([^.\s]+[.]){1,}[^.\s]+$");
+            Regex rx = new(@"^[^@\s]+[@]([^.\s]+[.]){1,}[^.\s]+$");
             if (!rx.IsMatch(text))
             {
 
@@ -176,6 +167,7 @@ namespace contacts_management_app
 
             }
         }
+
         private void MAILtextBox_Validated(object sender, EventArgs e)
         {
             // 検証済みの場合はエラーをクリアする
@@ -183,23 +175,31 @@ namespace contacts_management_app
 
         }
 
+        /// <summary>
+        /// キャンセルボタンクリック
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CancelButton_Click(object sender, EventArgs e)
         {
-            //画面遷移
-            //ダイアログの戻り値をキャンセルに設定
-            this.DialogResult = DialogResult.Cancel;
+            ////画面遷移
+            ////ダイアログの戻り値をキャンセルに設定
+            //this.DialogResult = DialogResult.Cancel;
 
-            //ダイアログを閉じる
-            this.Close();
+            ////ダイアログを閉じる
+            //this.Close();
 
+            this.Hide();
+            this.Controls.Remove(this);
         }
-        private void dataGridView1(object sender, MouseEventArgs e)
+
+        private void DataGridView1(object sender, MouseEventArgs e)
         {
             return;
 
         }
 
-        private void toolStripStatusLabel1_Click(object sender, EventArgs e)
+        private void ToolStripStatusLabel1_Click(object sender, EventArgs e)
         {
 
         }

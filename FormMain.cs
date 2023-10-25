@@ -11,102 +11,102 @@ using System.Text.RegularExpressions;
 using System.Security.Cryptography;
 //using System.Text.RegularExpressions;
 using contacts_management_app.Class;
+using System.Runtime.InteropServices;
 
 namespace contacts_management_app
 {
     public partial class Top : Form
     {
-        private Form form2;
+        public Form form2;
+        private object ultaraGridExcelExpter1;
+
+        public object UltraGrid1 { get; private set; }
 
         public Top()
-
         {
-            //最初のcommit
+            // 最初のcommit
             InitializeComponent();
         }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
+        private void TextBox1_TextChanged(object sender, EventArgs e)
         {
         }
 
+        /// <summary>
+        /// dataGridView1に連絡先データをバインド
+        /// </summary>
+        private void ShowAllContacts()
+        {
+            // DBから連絡先データを持ってくる
+            DataTable dt = DBaccesser.GetData();
+            dataGridView1.DataSource = dt;
+
+            // データを追加
+            // ContactList contactlist = new ContactList();
+            // dataGridView1.DataSource = contactlist.Data;
+
+            // カラム名を指定
+            dataGridView1.Columns[0].HeaderText = "ID";
+            dataGridView1.Columns[1].HeaderText = "NAME";
+            dataGridView1.Columns[2].HeaderText = "TEL";
+            dataGridView1.Columns[3].HeaderText = "MAIL";
+            dataGridView1.Columns[4].HeaderText = "MEMO";
+        }
+
+        /// <summary>
+        /// トップ画面表示後に連絡先データを表示する
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Top_Load(object sender, EventArgs e)
+        {
+            // dataGridView1に連絡先データをバインド
+            ShowAllContacts();
+            ScreenTransitionTo(dataGridView1);
+        }
+
+        /// <summary>
+        /// 追加ボタンクリック
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void AddButton_Click(object sender, EventArgs e)
         {
-            //画面遷移ーcontact_saveButton
-            //Form1を表示
-            //Form2 form2 = new Form2();
-            //form2.ShowDialog();
-            //form2.Show();
-            ScreenTransitionTo(panel6);
+            // UserControl2(追加画面)をpanelMain(画面遷移するパネル)に追加
+            form2 = new UserControl2
+            {
+                TopLevel = false,
+                Dock = DockStyle.Fill
+            };
+            panelMain.Controls.Add(form2);
+
+            // 追加画面表示
             form2.Show();
-            panel6.Show();
+            panelMain.Show();
+            ScreenTransitionTo(panelMain);
+        }
+
+        /// <summary>
+        /// コントロールを最前面へ移動
+        /// </summary>
+        /// <param name="control"></param>
+        private static void ScreenTransitionTo(Control control)
+        {
+            control.BringToFront();
         }
 
         private void ExportButton_Click(object sender, EventArgs e)
         {
-            public void ConvertDataTableToCsv(
-                DataTable dt, string csvPath, bool writeHeader)
-            {
+            //this.ultaraGridExcelExpter1.Export(this.ultraGrid1, "C:\\Users\\y_takemiya\\source\\export.xlsx");
+           // string readText = File.ReadAllText(@"C:\Users\y_takemiya\source\repos\contacts-management-appexport.xlsx");
 
-                //CSVファイルに書き込むときに使うEncoding
-                System.Text.Encoding enc =
-                System.Text.Encoding.GetEncoding("Shift_JIS");
+            DataTable dt = DBaccesser.GetData();
+            dataGridView1.DataSource = dt;
 
-                //書き込むファイルを開く
-                System.IO.StreamWriter sr =
-                new System.IO.StreamWriter(csvPath, false, enc);
+            //DataTable table,
 
-                int colCount = dt.Columns.Count;
-                int lastColIndex = colCount - 1;
-                //ヘッダを書き込む
-                if (writeHeader)
-                {
-                    for (int i = 0; i < colCount; i++)
-                    {
-                        //ヘッダの取得
-                        string field = dt.Columns[i].Caption;
-                        //"で囲む
-                        field = EncloseDoubleQuotesIfNeed(field);
-                        //フィールドを書き込む
-                        sr.Write(field);
-                        //カンマを書き込む
-                        if (lastColIndex > i)
-                        {
-                            sr.Write(',');
-                        }
-                    }
-                    //改行する
-                    sr.Write("\r\n");
-                }
-                //レコードを書き込む
-                foreach (DataRow row in dt.Rows)
-                {
-                    for (int i = 0; i < colCount; i++)
-                    {
-                        //フィールドの取得
-                        string field = row[i].ToString();
-                        //"で囲む
-                        field = EncloseDoubleQuotesIfNeed(field);
-                        //フィールドを書き込む
-                        sr.Write(field);
-                        //カンマを書き込む
-                        if (lastColIndex > i)
-                        {
-                            sr.Write(',');
-                        }
-                    }
-                    //改行する
-                    sr.Write("\r\n");
-                }
-
-                //閉じる
-                sr.Close();
-            }
-
-
+           // dataGridView1.ToExcelFile(saveFileDialog1.FileName);
         }
-    
-
-
 
         private void SearchButton_Click(object sender, EventArgs e)
         {
@@ -131,8 +131,7 @@ namespace contacts_management_app
             else if (Regex.IsMatch(textBox1.Text, @"^[0-9]+$"))
             {
                 //DBから連絡先データを持ってくる
-                DBaccesser dbA = new DBaccesser();
-                DataTable dt = dbA.GetData($"SELECT * FROM contacts WHERE TEL LIKE '%{textBox1.Text}%'");
+                DataTable dt = DBaccesser.GetData($"SELECT * FROM contacts WHERE TEL LIKE '%{textBox1.Text}%'");
                 dataGridView1.DataSource = dt;
             }
 
@@ -142,39 +141,17 @@ namespace contacts_management_app
             else
             {
                 //textBox1.Text = Select();
-                DBaccesser dbA = new DBaccesser();
-                DataTable dt = dbA.GetData($"SELECT * FROM contacts WHERE NAME LIKE '%{textBox1.Text}%'");
+                DataTable dt = DBaccesser.GetData($"SELECT * FROM contacts WHERE NAME LIKE '%{textBox1.Text}%'");
                 dataGridView1.DataSource = dt;
             }
 
         }
-        private bool isInputEmpty(TextBox inputTextboxt)
+
+        private static bool IsInputEmpty(TextBox inputTextboxt)
         {
             return inputTextboxt.Text == "";
         }
-        private void ShowAllContacts()
-        {
-            //DBから連絡先データを持ってくる
-            DBaccesser dbA = new DBaccesser();
-            DataTable dt = dbA.GetData();
-            dataGridView1.DataSource = dt;
 
-            //tableにbindする
-
-            //return 
-
-            // データを追加
-            //ContactList contactlist = new ContactList();
-            // dataGridView1.DataSource = contactlist.Data;
-
-            // カラム名を指定
-            dataGridView1.Columns[0].HeaderText = "ID";
-            dataGridView1.Columns[1].HeaderText = "NAME";
-            dataGridView1.Columns[2].HeaderText = "TEL";
-            dataGridView1.Columns[3].HeaderText = "MAIL";
-            dataGridView1.Columns[4].HeaderText = "MEMO";
-
-        }
         public static class RegexUtils
         {
             /// <summary>
@@ -189,6 +166,7 @@ namespace contacts_management_app
                 return Regex.IsMatch(input, @"^[0-9]+$");
             }
         }
+
         //class PhoneFormatter
         //{
         //public static string FormatPhNumber(string phoneNum, string phoneFormat)
@@ -208,55 +186,37 @@ namespace contacts_management_app
 
         //}
 
-        private void textBox4_button_TextChanged(object sender, EventArgs e)
+        private void TextBox4_button_TextChanged(object sender, EventArgs e)
         {
 
         }
 
-        private void button1_Click_1(object sender, EventArgs e)
+        private void Button1_Click_1(object sender, EventArgs e)
         {
 
         }
 
-        private void textBox2_TextChanged(object sender, EventArgs e)
+        private void TextBox2_TextChanged(object sender, EventArgs e)
         {
 
         }
 
-        private void textBox3_TextChanged(object sender, EventArgs e)
+        private void TextBox3_TextChanged(object sender, EventArgs e)
         {
 
         }
 
-        private void label3_Click(object sender, EventArgs e)
+        private void Label3_Click(object sender, EventArgs e)
         {
 
         }
 
-        private void label7_Click(object sender, EventArgs e)
+        private void Label7_Click(object sender, EventArgs e)
         {
 
         }
 
-        private void Top_Load(object sender, EventArgs e)
-        {
-            ShowAllContacts();
-            form2 = new UserControl2();
-            form2.TopLevel = false;
-            form2.Dock = DockStyle.Fill;
-            panel6.Controls.Add(form2);
-            ScreenTransitionTo(dataGridView1);
-
-
-        }
-
-        private void ScreenTransitionTo(Control control)
-        {
-            control.BringToFront();
-        }
-
-
-        private void panel2_Paint(object sender, PaintEventArgs e)
+        private void Panel2_Paint(object sender, PaintEventArgs e)
         {
 
         }
@@ -266,24 +226,29 @@ namespace contacts_management_app
 
         }
 
-        private void panel2_Paint_1(object sender, PaintEventArgs e)
+        private void Panel2_Paint_1(object sender, PaintEventArgs e)
         {
 
         }
 
-        private void dataGridView1_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
+        private void DataGridView1_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
         {
 
         }
 
-        private void dataGridView1_CellContentClick_2(object sender, DataGridViewCellEventArgs e)
+        private void DataGridView1_CellContentClick_2(object sender, DataGridViewCellEventArgs e)
         {
 
         }
 
-        private void panel6_Paint(object sender, PaintEventArgs e)
+        private void Panel6_Paint(object sender, PaintEventArgs e)
         {
 
+        }
+        private void dataGridView1_Paint(object sender, PaintEventArgs e)
+        {
+            //this.TopMost = true;
+            //panelMain.Controls.Remove(this);
         }
 
         private void StatusText_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -291,5 +256,5 @@ namespace contacts_management_app
 
         }
     }
-
 }
+

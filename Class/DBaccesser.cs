@@ -12,7 +12,7 @@ namespace contacts_management_app.Class
     internal class DBaccesser
     {
 
-        public DataTable GetData(string sqlQuery = @"SELECT * FROM contacts")
+        public static DataTable GetData(string sqlQuery = @"SELECT * FROM contacts")
         {
             var table = new DataTable();
 
@@ -53,37 +53,35 @@ namespace contacts_management_app.Class
 
             return table;
         }
-        public void InsertData() {
+        public static void InsertData() {
             //接続文字列
             var connectionString = "Data Source=DSP417;Initial Catalog=test_take;User ID=sql_takemiya;Password=sql_takemiya";
-           
-            using (var connection = new SqlConnection(connectionString))
-            using (var command = connection.CreateCommand())
-            {
-                try
-                {                 
-                    // データベースの接続開始
-                    connection.Open();                    
-                        
-                    command.CommandText = @"INSERT INTO contacts (ID, NAME, TEL, MAIL, MEMO) VALUES (ID, NAME, TEL, MAIL, MEMO)";
-                    //command.Parameters.Add(new SqlParameter("@ID", ID));
-                    //command.Parameters.Add(new SqlParameter("@PASSWORD", password));
-                    //command.Parameters.Add(new SqlParameter("@ROLE_NAME", role));
 
-                    // SQLの実行
-                    command.ExecuteNonQuery();
-                }
-                catch (Exception exception)
-                {
-                    Console.WriteLine(exception.Message);
-                    throw;
-                }
-                finally
-                {
-                    // データベースの接続終了
-                    connection.Close();
-                }
-            }     
+            using var connection = new SqlConnection(connectionString);
+            using var command = connection.CreateCommand();
+            try
+            {
+                // データベースの接続開始
+                connection.Open();
+
+                command.CommandText = @"INSERT INTO contacts (ID, NAME, TEL, MAIL, MEMO) VALUES (ID, NAME, TEL, MAIL, MEMO)";
+                //command.Parameters.Add(new SqlParameter("@ID", ID));
+                //command.Parameters.Add(new SqlParameter("@PASSWORD", password));
+                //command.Parameters.Add(new SqlParameter("@ROLE_NAME", role));
+
+                // SQLの実行
+                command.ExecuteNonQuery();
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.Message);
+                throw;
+            }
+            finally
+            {
+                // データベースの接続終了
+                connection.Close();
+            }
         }
     }
 }
