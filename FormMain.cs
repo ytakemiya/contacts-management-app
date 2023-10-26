@@ -20,6 +20,8 @@ namespace contacts_management_app
         public Form form2;
         private object ultaraGridExcelExpter1;
 
+        
+
         public object UltraGrid1 { get; private set; }
 
         public Top()
@@ -73,15 +75,16 @@ namespace contacts_management_app
         private void AddButton_Click(object sender, EventArgs e)
         {
             // UserControl2(’Ç‰Á‰æ–Ê)‚ðpanel Main(‰æ–Ê‘JˆÚ‚·‚éƒpƒlƒ‹)‚É’Ç‰Á
-            form2 = new UserControl2
+            //form2 = new UserControl2
+            Form UserControl2 = new UserControl2()
             {
                 TopLevel = false,
                 Dock = DockStyle.Fill
             };
-            panelMain.Controls.Add(form2);
+            panelMain.Controls.Add(UserControl2);
 
             // ’Ç‰Á‰æ–Ê•\Ž¦
-            form2.Show();
+            UserControl2.Show();
             panelMain.Show();
             ScreenTransitionTo(panelMain);
         }
@@ -98,14 +101,14 @@ namespace contacts_management_app
         private void ExportButton_Click(object sender, EventArgs e)
         {
             //this.ultaraGridExcelExpter1.Export(this.ultraGrid1, "C:\\Users\\y_takemiya\\source\\export.xlsx");
-           // string readText = File.ReadAllText(@"C:\Users\y_takemiya\source\repos\contacts-management-appexport.xlsx");
+            // string readText = File.ReadAllText(@"C:\Users\y_takemiya\source\repos\contacts-management-appexport.xlsx");
 
             DataTable dt = DBaccesser.GetData();
             dataGridView1.DataSource = dt;
 
             //DataTable table,
 
-           // dataGridView1.ToExcelFile(saveFileDialog1.FileName);
+            // dataGridView1.ToExcelFile(saveFileDialog1.FileName);
         }
 
         private void SearchButton_Click(object sender, EventArgs e)
@@ -167,24 +170,6 @@ namespace contacts_management_app
             }
         }
 
-        //class PhoneFormatter
-        //{
-        //public static string FormatPhNumber(string phoneNum, string phoneFormat)
-        //{
-        // if (phoneFormat == "")
-        //{
-        //phoneFormat = "#########";
-        //}
-        //Regex regex = new Regex(@"[^\d]");
-        //phoneNum = regex.Replace(phoneNum, "");
-        // if (phoneNum.Length > 0)
-        //{
-        // phoneNum = Convert.ToInt64(phoneNum).ToString(phoneFormat);
-        // }
-        // return phoneNum;
-        //}
-
-        //}
 
         private void TextBox4_button_TextChanged(object sender, EventArgs e)
         {
@@ -247,8 +232,8 @@ namespace contacts_management_app
         }
         private void dataGridView1_Paint(object sender, PaintEventArgs e)
         {
-            //this.TopMost = true;
-            //panelMain.Controls.Remove(this);
+            this.TopMost = true;
+            panelMain.Controls.Remove(this);
         }
 
         private void StatusText_ItemClicked(object sender, ToolStripItemClickedEventArgs e)

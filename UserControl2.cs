@@ -11,6 +11,7 @@ using System.Linq;
 using System.Net.NetworkInformation;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
+using System.ServiceProcess;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -25,7 +26,8 @@ namespace contacts_management_app
     public partial class UserControl2 : Form
     {
         public Form form2;
-        public object ErrorProvider1 { get; private set; }
+        //public object ErrorProvider1 { get; private set; }
+        //public DataGridView DataGridView11 { get; }
 
         public UserControl2()
         {
@@ -33,6 +35,11 @@ namespace contacts_management_app
             this.ControlBox = false;
             this.Text = "";
         }
+
+        //public UserControl2(DataGridView dataGridView1)
+        //{
+        //    DataGridView11 = dataGridView1;
+        //}
 
         enum StrKind
         {
@@ -195,6 +202,10 @@ namespace contacts_management_app
         /// <param name="e"></param>
         private void CancelButton_Click(object sender, EventArgs e)
         {
+             
+            //sawaisawaisawai
+            //ScreenTransitionTo(dataGridView1);
+
             ////画面遷移
             ////ダイアログの戻り値をキャンセルに設定
             //this.DialogResult = DialogResult.Cancel;
