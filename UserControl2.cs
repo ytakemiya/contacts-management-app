@@ -8,6 +8,8 @@ using System.Data.SqlClient;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net.NetworkInformation;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -54,6 +56,15 @@ namespace contacts_management_app
 
         }
 
+        /// <summary>
+        /// コントロールを最前面へ移動
+        /// </summary>
+        /// <param name="control"></param>
+        private static void ScreenTransitionTo(Control control)
+        {
+            control.BringToFront();
+        }
+
         private void SaveButton_Click(object sender, EventArgs e)
         {
             string query = String.Format("INSERT INTO [contacts] ( NAME, TEL, MAIL, MEMO ) VALUES ( '{0}','{1}','{2}','{3}' );", NAMEtextBox.Text, TELtextBox.Text, MAILtextBox.Text, MEMOtextBox.Text);
@@ -80,6 +91,8 @@ namespace contacts_management_app
                         MessageBox.Show("保存しますか？");
 
                         DialogResult result = MessageBox.Show("保存しますか？", "確認", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                        Top Datagridviw1 = new Top();
+                        Datagridviw1.Show(); // サブ・フォームを表示
                         if (result == DialogResult.Yes)
                         {
                             StatusText.Text = "保存しました"; //変更
@@ -185,17 +198,13 @@ namespace contacts_management_app
             ////画面遷移
             ////ダイアログの戻り値をキャンセルに設定
             //this.DialogResult = DialogResult.Cancel;
-
-            ////ダイアログを閉じる
-            //this.Close();
-
-            this.Hide();
-            this.Controls.Remove(this);
+            //Top f2 = new Top(); // 自フォームへの参照を渡す
+            Top Datagridviw1 = new Top();
+            Datagridviw1.Show(); // サブ・フォームを表示
         }
 
         private void DataGridView1(object sender, MouseEventArgs e)
         {
-            return;
 
         }
 

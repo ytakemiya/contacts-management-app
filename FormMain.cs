@@ -72,7 +72,7 @@ namespace contacts_management_app
         /// <param name="e"></param>
         private void AddButton_Click(object sender, EventArgs e)
         {
-            // UserControl2(’Ç‰Á‰æ–Ê)‚ðpanelMain(‰æ–Ê‘JˆÚ‚·‚éƒpƒlƒ‹)‚É’Ç‰Á
+            // UserControl2(’Ç‰Á‰æ–Ê)‚ðpanel Main(‰æ–Ê‘JˆÚ‚·‚éƒpƒlƒ‹)‚É’Ç‰Á
             form2 = new UserControl2
             {
                 TopLevel = false,
