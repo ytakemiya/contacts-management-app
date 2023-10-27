@@ -12,15 +12,16 @@ using System.Security.Cryptography;
 //using System.Text.RegularExpressions;
 using contacts_management_app.Class;
 using System.Runtime.InteropServices;
+using Microsoft.Office.Interop.Excel;
+using DataTable = System.Data.DataTable;
 
 namespace contacts_management_app
 {
     public partial class Top : Form
-    {
-        public Form form2;
+    {      
         private object ultaraGridExcelExpter1;
 
-        
+
 
         public object UltraGrid1 { get; private set; }
 
@@ -37,7 +38,7 @@ namespace contacts_management_app
         /// <summary>
         /// dataGridView1に連絡先データをバインド
         /// </summary>
-        private void ShowAllContacts()
+        public void ShowAllContacts()
         {
             // DBから連絡先データを持ってくる
             DataTable dt = DBaccesser.GetData();
@@ -76,15 +77,17 @@ namespace contacts_management_app
         {
             // UserControl2(追加画面)をpanel Main(画面遷移するパネル)に追加
             //form2 = new UserControl2
-            Form UserControl2 = new UserControl2()
+            UserControl2 userControl2 = new UserControl2(this)
             {
                 TopLevel = false,
                 Dock = DockStyle.Fill
             };
-            panelMain.Controls.Add(UserControl2);
+            //userControl2.hoge();
+            panelMain.Controls.Add(userControl2);
+            
 
             // 追加画面表示
-            UserControl2.Show();
+            userControl2.Show();
             panelMain.Show();
             ScreenTransitionTo(panelMain);
         }
@@ -100,15 +103,7 @@ namespace contacts_management_app
 
         private void ExportButton_Click(object sender, EventArgs e)
         {
-            //this.ultaraGridExcelExpter1.Export(this.ultraGrid1, "C:\\Users\\y_takemiya\\source\\export.xlsx");
-            // string readText = File.ReadAllText(@"C:\Users\y_takemiya\source\repos\contacts-management-appexport.xlsx");
 
-            DataTable dt = DBaccesser.GetData();
-            dataGridView1.DataSource = dt;
-
-            //DataTable table,
-
-            // dataGridView1.ToExcelFile(saveFileDialog1.FileName);
         }
 
         private void SearchButton_Click(object sender, EventArgs e)

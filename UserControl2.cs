@@ -1,10 +1,12 @@
 ﻿using contacts_management_app.Class;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
+using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -25,20 +27,26 @@ namespace contacts_management_app
 {
     public partial class UserControl2 : Form
     {
-        public Form form2;
         //public object ErrorProvider1 { get; private set; }
         //public DataGridView DataGridView11 { get; }
+        private Panel _parent;
+        private Top _top;
 
-        public UserControl2()
+        public UserControl2(Top myParent)
         {
             InitializeComponent();
             this.ControlBox = false;
             this.Text = "";
+            bool Isfound = false;
+            Control[] cs = myParent.Controls.Find("panelMain", Isfound);
+            if (cs.Length > 0)
+                _parent = ((Panel)cs[0]);
+            _top = myParent;
         }
 
         //public UserControl2(DataGridView dataGridView1)
         //{
-        //    DataGridView11 = dataGridView1;
+        //    //DataGridView1 = dataGridView1;
         //}
 
         enum StrKind
@@ -78,67 +86,79 @@ namespace contacts_management_app
             // 接続文字列を指定してデータベースを指定
             //using (SqlConnection con = new SqlConnection("Data Source=DSP417; Initial Catalog=test_take; uid=sql_takemiya; pwd=sql_takemiya"))
             SqlConnection con = new("Data Source=DSP417; Initial Catalog=test_take; uid=sql_takemiya; pwd=sql_takemiya");
+
+            try
             {
+                //入力チェック
+                if (string.IsNullOrEmpty(NAMEtextBox.Text))
+                {
+                    MessageBox.Show("名前を入力して下さい。");
+                    NAMEtextBox.Focus();
+                    return;
+                }
+                else if (string.IsNullOrEmpty(TELtextBox.Text))
+                {
+                    MessageBox.Show("電話番号を入力して下さい。");
+                    TELtextBox.Focus();
+                    return;
+                }
+                else if (string.IsNullOrEmpty(MAILtextBox.Text))
+                {
+                    MessageBox.Show("メールを入力して下さい。");
+                    MAILtextBox.Focus();
+                    return;
+                }
+                //データベースの接続
+                con.Open();
+
+                using var transaction = con.BeginTransaction();
+                using var command = new SqlCommand() { Connection = con, Transaction = transaction };
                 try
                 {
-                    //データベースの接続
-                    con.Open();
+                    command.CommandText = query;
+                    command.ExecuteNonQuery();
+                    transaction.Commit();
 
-                    using var transaction = con.BeginTransaction();
-                    using var command = new SqlCommand() { Connection = con, Transaction = transaction };
-                    try
-                    {
-                        // コマンドのセット
-                        command.CommandText = query;
-                        //コマンドの実行
-                        command.ExecuteNonQuery();
-                        //コミット
-                        transaction.Commit();
 
-                        MessageBox.Show("保存しますか？");
 
-                        DialogResult result = MessageBox.Show("保存しますか？", "確認", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                        Top Datagridviw1 = new Top();
-                        Datagridviw1.Show(); // サブ・フォームを表示
-                        if (result == DialogResult.Yes)
-                        {
-                            StatusText.Text = "保存しました"; //変更
-                        }
-                        else
-                        {
-                            StatusText.Text = "キャンセルしました"; //←変更
-                        }
-                    }
-                    catch
-                    {
 
-                        //ロールバック
-                        transaction.Rollback();
-                        throw;
-                    }
+                    _parent.Hide();
+                    this.Close();
                 }
-
-                catch (SqlException sqlex)
+                catch
                 {
-                    Console.WriteLine(sqlex.Message);
+
+                    //ロールバック
+                    transaction.Rollback();
                     throw;
                 }
-                catch (Exception exception)
-                {
-                    Console.WriteLine(exception.Message);
-                    throw;
-                }
-                finally
-                {
-                    con.Close();
-                }
-
             }
+
+            catch (SqlException sqlex)
+            {
+                Console.WriteLine(sqlex.Message);
+                throw;
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.Message);
+                throw;
+            }
+            finally
+            {
+                con.Close();
+            }
+            //  連絡先全件表示
+            _top.ShowAllContacts();
+
+
+
         }
 
 
         private void NAMEtextBox_TextChanged(object sender, EventArgs e)
         {
+
 
         }
         private void TELtextBox_TextChanged(object sender, EventArgs e)
@@ -202,16 +222,19 @@ namespace contacts_management_app
         /// <param name="e"></param>
         private void CancelButton_Click(object sender, EventArgs e)
         {
-             
-            //sawaisawaisawai
-            //ScreenTransitionTo(dataGridView1);
+
+            _parent.Hide();
+            this.Close();
+            //panelMain.Show();
+            //ScreenTransitionTo(panelMain);
+
 
             ////画面遷移
             ////ダイアログの戻り値をキャンセルに設定
             //this.DialogResult = DialogResult.Cancel;
             //Top f2 = new Top(); // 自フォームへの参照を渡す
-            Top Datagridviw1 = new Top();
-            Datagridviw1.Show(); // サブ・フォームを表示
+            //Top Datagridview1 = new Top();
+            //Datagridview1.Show(); // サブ・フォームを表示
         }
 
         private void DataGridView1(object sender, MouseEventArgs e)
@@ -223,5 +246,6 @@ namespace contacts_management_app
         {
 
         }
+
     }
 }
