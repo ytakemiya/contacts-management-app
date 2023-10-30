@@ -46,6 +46,7 @@
             panel1 = new Panel();
             panel2 = new Panel();
             panel4 = new Panel();
+            DeleteButton = new Button();
             panelMain = new Panel();
             dataGridView1 = new DataGridView();
             panel3.SuspendLayout();
@@ -57,9 +58,10 @@
             // 
             // SearchButton
             // 
-            SearchButton.Location = new Point(480, 16);
+            SearchButton.Location = new Point(686, 27);
+            SearchButton.Margin = new Padding(4, 5, 4, 5);
             SearchButton.Name = "SearchButton";
-            SearchButton.Size = new Size(68, 23);
+            SearchButton.Size = new Size(97, 38);
             SearchButton.TabIndex = 0;
             SearchButton.Text = "検索";
             SearchButton.UseVisualStyleBackColor = true;
@@ -68,18 +70,20 @@
             // 
             // textBox1
             // 
-            textBox1.Location = new Point(235, 17);
+            textBox1.Location = new Point(336, 28);
+            textBox1.Margin = new Padding(4, 5, 4, 5);
             textBox1.Name = "textBox1";
-            textBox1.Size = new Size(239, 23);
+            textBox1.Size = new Size(340, 31);
             textBox1.TabIndex = 1;
             textBox1.TextAlign = HorizontalAlignment.Center;
             textBox1.TextChanged += TextBox1_TextChanged;
             // 
             // AddButton
             // 
-            AddButton.Location = new Point(688, 40);
+            AddButton.Location = new Point(983, 67);
+            AddButton.Margin = new Padding(4, 5, 4, 5);
             AddButton.Name = "AddButton";
-            AddButton.Size = new Size(57, 30);
+            AddButton.Size = new Size(81, 50);
             AddButton.TabIndex = 3;
             AddButton.Text = "追加";
             AddButton.UseVisualStyleBackColor = true;
@@ -93,26 +97,29 @@
             panel3.Controls.Add(textBox1);
             panel3.Controls.Add(SearchButton);
             panel3.Controls.Add(AddButton);
-            panel3.Location = new Point(154, 0);
+            panel3.Location = new Point(220, 0);
+            panel3.Margin = new Padding(4, 5, 4, 5);
             panel3.Name = "panel3";
-            panel3.Size = new Size(748, 70);
+            panel3.Size = new Size(1069, 117);
             panel3.TabIndex = 10;
             // 
             // panel5
             // 
             panel5.BackColor = SystemColors.Highlight;
             panel5.ForeColor = Color.Peru;
-            panel5.Location = new Point(6, 105);
+            panel5.Location = new Point(9, 175);
+            panel5.Margin = new Padding(4, 5, 4, 5);
             panel5.Name = "panel5";
-            panel5.Size = new Size(638, 363);
+            panel5.Size = new Size(911, 605);
             panel5.TabIndex = 13;
             // 
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(520, 48);
+            label4.Location = new Point(727, 80);
+            label4.Margin = new Padding(4, 0, 4, 0);
             label4.Name = "label4";
-            label4.Size = new Size(162, 15);
+            label4.Size = new Size(248, 25);
             label4.TabIndex = 12;
             label4.Text = "※メール,memoは検索できません";
             // 
@@ -120,9 +127,10 @@
             // 
             Tellabel.AutoSize = true;
             Tellabel.BackColor = SystemColors.ButtonFace;
-            Tellabel.Location = new Point(3, 3);
+            Tellabel.Location = new Point(4, 5);
+            Tellabel.Margin = new Padding(4, 0, 4, 0);
             Tellabel.Name = "Tellabel";
-            Tellabel.Size = new Size(43, 15);
+            Tellabel.Size = new Size(66, 25);
             Tellabel.TabIndex = 11;
             Tellabel.Text = "電話帳";
             Tellabel.Click += Tellabel_Click;
@@ -130,9 +138,10 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(40, 15);
+            label3.Location = new Point(57, 25);
+            label3.Margin = new Padding(4, 0, 4, 0);
             label3.Name = "label3";
-            label3.Size = new Size(73, 15);
+            label3.Size = new Size(111, 25);
             label3.TabIndex = 10;
             label3.Text = "・連絡先管理";
             label3.Click += Label3_Click;
@@ -140,35 +149,37 @@
             // label6
             // 
             label6.AutoSize = true;
-            label6.Location = new Point(322, 218);
+            label6.Location = new Point(460, 363);
+            label6.Margin = new Padding(4, 0, 4, 0);
             label6.Name = "label6";
-            label6.Size = new Size(0, 15);
+            label6.Size = new Size(0, 25);
             label6.TabIndex = 13;
             // 
             // label7
             // 
             label7.AutoSize = true;
-            label7.Location = new Point(57, 69);
+            label7.Location = new Point(81, 115);
+            label7.Margin = new Padding(4, 0, 4, 0);
             label7.Name = "label7";
-            label7.Size = new Size(0, 15);
+            label7.Size = new Size(0, 25);
             label7.TabIndex = 14;
             label7.Click += Label7_Click;
             // 
             // label9
             // 
             label9.AutoSize = true;
-            label9.Location = new Point(473, 324);
+            label9.Location = new Point(676, 540);
+            label9.Margin = new Padding(4, 0, 4, 0);
             label9.Name = "label9";
-            label9.Size = new Size(0, 15);
+            label9.Size = new Size(0, 25);
             label9.TabIndex = 16;
             // 
             // ExportButton
             // 
             ExportButton.BackColor = SystemColors.GradientInactiveCaption;
-            ExportButton.Location = new Point(0, 43);
-            ExportButton.Margin = new Padding(2);
+            ExportButton.Location = new Point(0, 72);
             ExportButton.Name = "ExportButton";
-            ExportButton.Size = new Size(160, 24);
+            ExportButton.Size = new Size(229, 40);
             ExportButton.TabIndex = 9;
             ExportButton.Text = "連絡先エクスポート";
             ExportButton.UseVisualStyleBackColor = false;
@@ -177,27 +188,30 @@
             // ImportButton
             // 
             ImportButton.BackColor = SystemColors.GradientInactiveCaption;
-            ImportButton.Location = new Point(0, 69);
+            ImportButton.Location = new Point(0, 115);
+            ImportButton.Margin = new Padding(4, 5, 4, 5);
             ImportButton.Name = "ImportButton";
-            ImportButton.Size = new Size(160, 24);
+            ImportButton.Size = new Size(229, 40);
             ImportButton.TabIndex = 18;
             ImportButton.Text = "連絡先インポート";
             ImportButton.UseVisualStyleBackColor = false;
             // 
             // label5
             // 
-            label5.Location = new Point(336, 187);
+            label5.Location = new Point(480, 312);
+            label5.Margin = new Padding(4, 0, 4, 0);
             label5.Name = "label5";
-            label5.Size = new Size(1, 23);
+            label5.Size = new Size(1, 38);
             label5.TabIndex = 19;
             label5.Text = "label5";
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(34, 24);
+            label2.Location = new Point(49, 40);
+            label2.Margin = new Padding(4, 0, 4, 0);
             label2.Name = "label2";
-            label2.Size = new Size(93, 15);
+            label2.Size = new Size(142, 25);
             label2.TabIndex = 0;
             label2.Text = "連絡先管理アプリ";
             // 
@@ -206,8 +220,9 @@
             panel1.BackColor = SystemColors.Info;
             panel1.Controls.Add(label2);
             panel1.Location = new Point(0, 0);
+            panel1.Margin = new Padding(4, 5, 4, 5);
             panel1.Name = "panel1";
-            panel1.Size = new Size(160, 70);
+            panel1.Size = new Size(229, 117);
             panel1.TabIndex = 20;
             // 
             // panel2
@@ -217,27 +232,42 @@
             panel2.Controls.Add(ImportButton);
             panel2.Controls.Add(ExportButton);
             panel2.Controls.Add(label3);
-            panel2.Location = new Point(0, 71);
+            panel2.Location = new Point(0, 118);
+            panel2.Margin = new Padding(4, 5, 4, 5);
             panel2.Name = "panel2";
-            panel2.Size = new Size(160, 556);
+            panel2.Size = new Size(229, 927);
             panel2.TabIndex = 21;
             panel2.Paint += Panel2_Paint_1;
             // 
             // panel4
             // 
             panel4.BackColor = SystemColors.ActiveBorder;
+            panel4.Controls.Add(DeleteButton);
             panel4.Controls.Add(Tellabel);
-            panel4.Location = new Point(160, 70);
+            panel4.Location = new Point(229, 117);
+            panel4.Margin = new Padding(4, 5, 4, 5);
             panel4.Name = "panel4";
-            panel4.Size = new Size(739, 21);
+            panel4.Size = new Size(1056, 35);
             panel4.TabIndex = 22;
+            // 
+            // DeleteButton
+            // 
+            DeleteButton.ForeColor = Color.Black;
+            DeleteButton.Location = new Point(182, 0);
+            DeleteButton.Name = "DeleteButton";
+            DeleteButton.Size = new Size(112, 34);
+            DeleteButton.TabIndex = 19;
+            DeleteButton.Text = "削除";
+            DeleteButton.UseVisualStyleBackColor = true;
+            DeleteButton.Click += DeleteButton_Click;
             // 
             // panelMain
             // 
             panelMain.BackColor = Color.MistyRose;
-            panelMain.Location = new Point(160, 91);
+            panelMain.Location = new Point(229, 152);
+            panelMain.Margin = new Padding(4, 5, 4, 5);
             panelMain.Name = "panelMain";
-            panelMain.Size = new Size(742, 536);
+            panelMain.Size = new Size(1060, 893);
             panelMain.TabIndex = 24;
             panelMain.Visible = false;
             panelMain.Paint += Panel6_Paint;
@@ -246,19 +276,20 @@
             // 
             dataGridView1.BackgroundColor = SystemColors.Info;
             dataGridView1.ColumnHeadersHeight = 34;
-            dataGridView1.Location = new Point(160, 91);
+            dataGridView1.Location = new Point(229, 152);
+            dataGridView1.Margin = new Padding(4, 5, 4, 5);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.RowHeadersWidth = 62;
             dataGridView1.RowTemplate.Height = 25;
-            dataGridView1.Size = new Size(739, 520);
+            dataGridView1.Size = new Size(1060, 888);
             dataGridView1.TabIndex = 23;
             dataGridView1.CellContentClick += DataGridView1_CellContentClick_2;
             // 
             // Top
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(899, 623);
+            ClientSize = new Size(1284, 1038);
             Controls.Add(dataGridView1);
             Controls.Add(panel4);
             Controls.Add(panel2);
@@ -269,6 +300,7 @@
             Controls.Add(panel3);
             Controls.Add(panelMain);
             ForeColor = Color.Black;
+            Margin = new Padding(4, 5, 4, 5);
             Name = "Top";
             Text = "Top";
             Load += Top_Load;
@@ -307,5 +339,6 @@
         private Panel panel5;
         private Panel panelMain;
         private DataGridView dataGridView1;
+        private Button DeleteButton;
     }
 }

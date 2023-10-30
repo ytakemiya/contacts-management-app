@@ -13,17 +13,23 @@ using System.Security.Cryptography;
 using contacts_management_app.Class;
 using System.Runtime.InteropServices;
 using Microsoft.Office.Interop.Excel;
-using DataTable = System.Data.DataTable;
+using ContactsTable = System.Data.DataTable;
+using System.Data.Common;
 
 namespace contacts_management_app
 {
     public partial class Top : Form
-    {      
+    {
         private object ultaraGridExcelExpter1;
 
-
+        ContactsTable ContactsTable1;
+        ContactsTable dt;
 
         public object UltraGrid1 { get; private set; }
+        public object ContactsTable { get; private set; }
+
+
+        private int weight = 200;
 
         public Top()
         {
@@ -41,7 +47,8 @@ namespace contacts_management_app
         public void ShowAllContacts()
         {
             // DBから連絡先データを持ってくる
-            DataTable dt = DBaccesser.GetData();
+            //ContactsTable dt = DBaccesser.GetData();
+            dt = DBaccesser.GetData();
             dataGridView1.DataSource = dt;
 
             // データを追加
@@ -54,6 +61,7 @@ namespace contacts_management_app
             dataGridView1.Columns[2].HeaderText = "TEL";
             dataGridView1.Columns[3].HeaderText = "MAIL";
             dataGridView1.Columns[4].HeaderText = "MEMO";
+            dataGridView1.Columns[5].HeaderText = "ボタン";
         }
 
         /// <summary>
@@ -66,6 +74,9 @@ namespace contacts_management_app
             // dataGridView1に連絡先データをバインド
             ShowAllContacts();
             ScreenTransitionTo(dataGridView1);
+
+            ContactsTable = new ContactsTable();
+
         }
 
         /// <summary>
@@ -84,7 +95,7 @@ namespace contacts_management_app
             };
             //userControl2.hoge();
             panelMain.Controls.Add(userControl2);
-            
+
 
             // 追加画面表示
             userControl2.Show();
@@ -101,10 +112,11 @@ namespace contacts_management_app
             control.BringToFront();
         }
 
-        private void ExportButton_Click(object sender, EventArgs e)
+        public static void ExportButton_Click(object sender, EventArgs e)
         {
 
         }
+
 
         private void SearchButton_Click(object sender, EventArgs e)
         {
@@ -129,7 +141,7 @@ namespace contacts_management_app
             else if (Regex.IsMatch(textBox1.Text, @"^[0-9]+$"))
             {
                 //DBから連絡先データを持ってくる
-                DataTable dt = DBaccesser.GetData($"SELECT * FROM contacts WHERE TEL LIKE '%{textBox1.Text}%'");
+                ContactsTable dt = DBaccesser.GetData($"SELECT * FROM contacts WHERE TEL LIKE '%{textBox1.Text}%'");
                 dataGridView1.DataSource = dt;
             }
 
@@ -139,7 +151,7 @@ namespace contacts_management_app
             else
             {
                 //textBox1.Text = Select();
-                DataTable dt = DBaccesser.GetData($"SELECT * FROM contacts WHERE NAME LIKE '%{textBox1.Text}%'");
+                ContactsTable dt = DBaccesser.GetData($"SELECT * FROM contacts WHERE NAME LIKE '%{textBox1.Text}%'");
                 dataGridView1.DataSource = dt;
             }
 
@@ -173,7 +185,7 @@ namespace contacts_management_app
 
         private void Button1_Click_1(object sender, EventArgs e)
         {
-
+          
         }
 
         private void TextBox2_TextChanged(object sender, EventArgs e)
@@ -218,7 +230,7 @@ namespace contacts_management_app
 
         private void DataGridView1_CellContentClick_2(object sender, DataGridViewCellEventArgs e)
         {
-
+           
         }
 
         private void Panel6_Paint(object sender, PaintEventArgs e)
@@ -235,6 +247,17 @@ namespace contacts_management_app
         {
 
         }
+
+        private void DeleteButton_Click(object sender, EventArgs e)
+        {
+            //選択された行を削除する
+            if (dataGridView1.SelectedRows.Count > 0)
+            {
+                dt.Rows.RemoveAt(dataGridView1.SelectedRows[0].Index);
+
+            }
+        }
+
     }
 }
 
