@@ -15,6 +15,8 @@ using System.Runtime.InteropServices;
 using Microsoft.Office.Interop.Excel;
 using ContactsTable = System.Data.DataTable;
 using System.Data.Common;
+using System.Data.SqlClient;
+
 
 namespace contacts_management_app
 {
@@ -61,7 +63,7 @@ namespace contacts_management_app
             dataGridView1.Columns[2].HeaderText = "TEL";
             dataGridView1.Columns[3].HeaderText = "MAIL";
             dataGridView1.Columns[4].HeaderText = "MEMO";
-            dataGridView1.Columns[5].HeaderText = "ボタン";
+
         }
 
         /// <summary>
@@ -185,7 +187,7 @@ namespace contacts_management_app
 
         private void Button1_Click_1(object sender, EventArgs e)
         {
-          
+
         }
 
         private void TextBox2_TextChanged(object sender, EventArgs e)
@@ -230,7 +232,7 @@ namespace contacts_management_app
 
         private void DataGridView1_CellContentClick_2(object sender, DataGridViewCellEventArgs e)
         {
-           
+
         }
 
         private void Panel6_Paint(object sender, PaintEventArgs e)
@@ -251,13 +253,71 @@ namespace contacts_management_app
         private void DeleteButton_Click(object sender, EventArgs e)
         {
             //選択された行を削除する
-            if (dataGridView1.SelectedRows.Count > 0)
+            if (dataGridView1.SelectedRows.Count < 0)
             {
                 dt.Rows.RemoveAt(dataGridView1.SelectedRows[0].Index);
 
-            }
-        }
+            }       
 
+
+        // 接続文字列
+        SqlConnection con = new("Data Source=DSP417; Initial Catalog=test_take; uid=sql_takemiya; pwd=sql_takemiya");
+            // データ削除のSQL
+
+            // SQL文をセットする
+            string query = String.Format(@"DELETE FROM contacts WHERE ID = @ID");
+            // string query = String.Format(@"SELECT * FROM contacts");
+            try
+            {
+
+                // コネクションを取得する
+                //using (var conn = new SqlConnection())
+
+                // コマンドを取得する
+                using (SqlCommand cmd = con.CreateCommand())
+                {
+
+
+
+                    // コネクションをオープンする
+                    con.Open();
+
+                    // データ削除のSQLを実行します。
+                    cmd.CommandText = query;
+                    var param = new SqlParameter("@ID", SqlDbType.Int);
+                    param.Value = dataGridView1.SelectedRows[0].Cells[0].Value;
+                    cmd.Parameters.Add(param);
+                    var result = cmd.ExecuteNonQuery();
+                    // 実行された結果が1行ではない場合
+                    if (result != 1)
+                    {
+                        Console.WriteLine("データを削除できませんでした。");
+                    }
+                }
+            }
+            // 例外が発生した場合
+            catch (SqlException ex)
+            {
+                // 例外の内容を表示します。
+                Console.WriteLine(ex);
+            }
+
+            //Console.ReadKey();
+
+
+            //// SQL文をセットする
+            //cmd.CommandText = @"DELETE FROM contacts WHERE SelectedRows.Count > 0";
+
+            //    // DELETEを実行する
+            //    int cnt = cmd.ExecuteNonQuery();
+
+            //    // 処理件数を表示する
+            //    Console.WriteLine(cnt);
+
+
+
+
+        }
     }
 }
 
