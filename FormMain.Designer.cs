@@ -141,9 +141,8 @@
             label3.Location = new Point(57, 25);
             label3.Margin = new Padding(4, 0, 4, 0);
             label3.Name = "label3";
-            label3.Size = new Size(111, 25);
+            label3.Size = new Size(0, 25);
             label3.TabIndex = 10;
-            label3.Text = "・連絡先管理";
             label3.Click += Label3_Click;
             // 
             // label6
@@ -232,10 +231,10 @@
             panel2.Controls.Add(ImportButton);
             panel2.Controls.Add(ExportButton);
             panel2.Controls.Add(label3);
-            panel2.Location = new Point(0, 118);
+            panel2.Location = new Point(0, 117);
             panel2.Margin = new Padding(4, 5, 4, 5);
             panel2.Name = "panel2";
-            panel2.Size = new Size(229, 927);
+            panel2.Size = new Size(229, 928);
             panel2.TabIndex = 21;
             panel2.Paint += Panel2_Paint_1;
             // 
@@ -289,7 +288,7 @@
             dataGridView1.Size = new Size(1060, 888);
             dataGridView1.TabIndex = 23;
             dataGridView1.CellContentClick += dataGridView1_CellContentClick;
-            dataGridView1.EditingControlShowing += dataGridView1_EditingControlShowing;
+            //dataGridView1.EditingControlShowing += dataGridView1_EditingControlShowing;
             // 
             // Top
             // 

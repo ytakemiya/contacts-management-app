@@ -15,6 +15,7 @@ using Microsoft.Office.Interop.Excel;
 using ContactsTable = System.Data.DataTable;
 using System.Data.Common;
 using System.Data.SqlClient;
+using static System.ComponentModel.Design.ObjectSelectorEditor;
 
 
 namespace contacts_management_app
@@ -63,10 +64,10 @@ namespace contacts_management_app
 
             // カラム名を指定
             dataGridView1.Columns[0].HeaderText = "ID";
-            dataGridView1.Columns[1].HeaderText = "NAME";
-            dataGridView1.Columns[2].HeaderText = "TEL";
-            dataGridView1.Columns[3].HeaderText = "MAIL";
-            dataGridView1.Columns[4].HeaderText = "MEMO";
+            dataGridView1.Columns[1].HeaderText = "名前";
+            dataGridView1.Columns[2].HeaderText = "電話番号";
+            dataGridView1.Columns[3].HeaderText = "メール";
+            dataGridView1.Columns[4].HeaderText = "メモ欄";
             //DataGridViewに追加する
             dataGridView1.Columns.Add(column);
         }
@@ -126,6 +127,37 @@ namespace contacts_management_app
 
         private void SearchButton_Click(object sender, EventArgs e)
         {
+            //sawai
+            //共通部分
+            string commonSELECT = "SELECT * FROM contacts ";
+            string addWHERE;
+
+            //共通していない部分は条件分岐する
+            if (String.IsNullOrEmpty(textBox1.Text))
+            {
+                //  何も追加しない
+                addWHERE = "";
+            }
+            else if (Regex.IsMatch(textBox1.Text, @"^[0-9]+$"))
+            {
+                addWHERE = $" WHERE TEL LIKE '%{textBox1.Text}%'";
+
+            }
+            else
+            {
+                addWHERE = $" WHERE NAME LIKE '%{textBox1.Text}%'";
+            }
+
+            string excuteQuery = commonSELECT + addWHERE;
+
+            //  "SELECT * FROM contacts "
+            //  "SELECT * FROM contacts WHERE TEL LIKE '%{textBox1.Text}%'")"
+            //  "SELECT * FROM contacts WHERE NAME LIKE '%{textBox1.Text}%'""
+            //SQL実行させる
+            ContactsTable dt =
+                    DBaccesser.GetData(excuteQuery);
+            dataGridView1.DataSource = dt;
+
             //ここにボタンクリック時の処理を記載する。
             // ボタンがクリックされたときに呼び出されるメソッド
             //if (条件検索ボックスが空の場合           
@@ -147,8 +179,9 @@ namespace contacts_management_app
             else if (Regex.IsMatch(textBox1.Text, @"^[0-9]+$"))
             {
                 //DBから連絡先データを持ってくる
-                ContactsTable dt = DBaccesser.GetData($"SELECT * FROM contacts WHERE TEL LIKE '%{textBox1.Text}%'");
-                dataGridView1.DataSource = dt;
+                //ContactsTable dt = 
+                //    DBaccesser.GetData($"SELECT * FROM contacts WHERE TEL LIKE '%{textBox1.Text}%'");
+                //dataGridView1.DataSource = dt;
             }
 
             //入力が文字列のみ場合は
@@ -156,9 +189,9 @@ namespace contacts_management_app
             //else それ以外で
             else
             {
-                //textBox1.Text = Select();
-                ContactsTable dt = DBaccesser.GetData($"SELECT * FROM contacts WHERE NAME LIKE '%{textBox1.Text}%'");
-                dataGridView1.DataSource = dt;
+                ////textBox1.Text = Select();
+                //ContactsTable dt = DBaccesser.GetData($"SELECT * FROM contacts WHERE NAME LIKE '%{textBox1.Text}%'");
+                //dataGridView1.DataSource = dt;
             }
 
         }
@@ -254,12 +287,13 @@ namespace contacts_management_app
                 }
                 dt.Rows.RemoveAt(dataGridView1.SelectedRows[0].Index);
 
-                //if ()
+                //削除するかユーザーに確認する
+                //if (MessageBox.Show("この行を削除しますか？",
+                //    "削除の確認",
+                //    MessageBoxButtons.OKCancel,
+                //    MessageBoxIcon.Question) != DialogResult.OK)
                 //{
-                //    MessageBox.Show("選択してください。");
-                //    dataGridView1.Focus();
                 //    return;
-
                 //}
 
 
@@ -325,26 +359,26 @@ namespace contacts_management_app
             }
         }
 
-        private void dataGridView1_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
-        {
-            // 表示されているコントロールがDataGridViewTextBoxEditingControlか調べる
-            if (e.Control is DataGridViewTextBoxEditingControl)
-            {
-                DataGridView dgv = (DataGridView)sender;
+        //private void dataGridView1_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        //{
+        //    // 表示されているコントロールがDataGridViewTextBoxEditingControlか調べる
+        //    if (e.Control is DataGridViewTextBoxEditingControl)
+        //    {
+        //        DataGridView dgv = (DataGridView)sender;
 
-                //編集のために表示されているコントロールを取得
-                DataGridViewTextBoxEditingControl tb =
-                    (DataGridViewTextBoxEditingControl)e.Control;
-                //次のようにしてもよい
-                //TextBox tb = (TextBox)e.Control;
+        //        //編集のために表示されているコントロールを取得
+        //        DataGridViewTextBoxEditingControl tb =
+        //            (DataGridViewTextBoxEditingControl)e.Control;
+        //        //次のようにしてもよい
+        //        //TextBox tb = (TextBox)e.Control;
 
-                //列によってIMEのモードを変更する
-                if (dgv.CurrentCell.OwningColumn.Name == "Column1")
-                    tb.ImeMode = ImeMode.Disable;
-                else
-                    tb.ImeMode = dgv.ImeMode;
-            }
-        }
+        //        //列によってIMEのモードを変更する
+        //        if (dgv.CurrentCell.OwningColumn.Name == "Column1")
+        //            tb.ImeMode = ImeMode.Disable;
+        //        else
+        //            tb.ImeMode = dgv.ImeMode;
+        //    }
+        
     }
 }
 
