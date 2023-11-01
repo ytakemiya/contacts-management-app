@@ -9,7 +9,6 @@ using System.Data;
 using contacts_management_app.contactClass;
 using System.Text.RegularExpressions;
 using System.Security.Cryptography;
-//using System.Text.RegularExpressions;
 using contacts_management_app.Class;
 using System.Runtime.InteropServices;
 using Microsoft.Office.Interop.Excel;
@@ -27,11 +26,9 @@ namespace contacts_management_app
         ContactsTable ContactsTable1;
         ContactsTable dt;
 
-        public object UltraGrid1 { get; private set; }
+
         public object ContactsTable { get; private set; }
 
-
-        private int weight = 200;
 
         public Top()
         {
@@ -56,6 +53,13 @@ namespace contacts_management_app
             // データを追加
             // ContactList contactlist = new ContactList();
             // dataGridView1.DataSource = contactlist.Data;
+            //DataGridViewButtonColumnの作成
+            DataGridViewButtonColumn column = new DataGridViewButtonColumn();
+            //列の名前を設定
+            column.Name = "Button";
+            //全てのボタンに"編集と表示する
+            column.UseColumnTextForButtonValue = true;
+            column.Text = "編集";
 
             // カラム名を指定
             dataGridView1.Columns[0].HeaderText = "ID";
@@ -63,7 +67,8 @@ namespace contacts_management_app
             dataGridView1.Columns[2].HeaderText = "TEL";
             dataGridView1.Columns[3].HeaderText = "MAIL";
             dataGridView1.Columns[4].HeaderText = "MEMO";
-
+            //DataGridViewに追加する
+            dataGridView1.Columns.Add(column);
         }
 
         /// <summary>
@@ -116,7 +121,6 @@ namespace contacts_management_app
 
         public static void ExportButton_Click(object sender, EventArgs e)
         {
-
         }
 
 
@@ -225,16 +229,6 @@ namespace contacts_management_app
 
         }
 
-        private void DataGridView1_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
-        private void DataGridView1_CellContentClick_2(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
         private void Panel6_Paint(object sender, PaintEventArgs e)
         {
 
@@ -245,78 +239,111 @@ namespace contacts_management_app
             panelMain.Controls.Remove(this);
         }
 
-        private void StatusText_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
-        {
-
-        }
-
         private void DeleteButton_Click(object sender, EventArgs e)
         {
+
+            int selectedID = 0;
             //選択された行を削除する
-            if (dataGridView1.SelectedRows.Count < 0)
+            if (dataGridView1.SelectedRows.Count > 0)
             {
+                var strID = dataGridView1.SelectedRows[0].Cells[0].Value.ToString();
+
+                if (int.TryParse(strID, out var num))
+                {
+                    selectedID = num;
+                }
                 dt.Rows.RemoveAt(dataGridView1.SelectedRows[0].Index);
 
-            }       
+                //if ()
+                //{
+                //    MessageBox.Show("選択してください。");
+                //    dataGridView1.Focus();
+                //    return;
+
+                //}
 
 
-        // 接続文字列
-        SqlConnection con = new("Data Source=DSP417; Initial Catalog=test_take; uid=sql_takemiya; pwd=sql_takemiya");
-            // データ削除のSQL
+                // 接続文字列
+                SqlConnection con = new("Data Source=DSP417; Initial Catalog=test_take; uid=sql_takemiya; pwd=sql_takemiya");
+                // データ削除のSQL
 
-            // SQL文をセットする
-            string query = String.Format(@"DELETE FROM contacts WHERE ID = @ID");
-            // string query = String.Format(@"SELECT * FROM contacts");
-            try
-            {
-
-                // コネクションを取得する
-                //using (var conn = new SqlConnection())
-
-                // コマンドを取得する
-                using (SqlCommand cmd = con.CreateCommand())
+                // SQL文をセットする
+                string query = String.Format(@"DELETE FROM contacts WHERE ID = @ID");
+                // string query = String.Format(@"SELECT * FROM contacts");
+                try
                 {
 
+                    // コネクションを取得する
+                    //using (var conn = new SqlConnection())
 
-
-                    // コネクションをオープンする
-                    con.Open();
-
-                    // データ削除のSQLを実行します。
-                    cmd.CommandText = query;
-                    var param = new SqlParameter("@ID", SqlDbType.Int);
-                    param.Value = dataGridView1.SelectedRows[0].Cells[0].Value;
-                    cmd.Parameters.Add(param);
-                    var result = cmd.ExecuteNonQuery();
-                    // 実行された結果が1行ではない場合
-                    if (result != 1)
+                    // コマンドを取得する
+                    using (SqlCommand cmd = con.CreateCommand())
                     {
-                        Console.WriteLine("データを削除できませんでした。");
+
+
+
+                        // コネクションをオープンする
+                        con.Open();
+
+
+
+                        // データ削除のSQLを実行します。
+                        cmd.CommandText = query;
+                        var param = new SqlParameter("@ID", SqlDbType.Int);
+                        param.Value = selectedID;
+                        cmd.Parameters.Add(param);
+                        var result = cmd.ExecuteNonQuery();
+                        // 実行された結果が1行ではない場合
+                        if (result != 1)
+                        {
+                            Console.WriteLine("データを削除できませんでした。");
+                        }
                     }
                 }
+                // 例外が発生した場合
+                catch (SqlException ex)
+                {
+                    // 例外の内容を表示します。
+                    Console.WriteLine(ex);
+                }
+
+
+
+
+
             }
-            // 例外が発生した場合
-            catch (SqlException ex)
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            DataGridView dgv = (DataGridView)sender;
+            //"Button"列ならば、ボタンがクリックされた
+            if (dgv.Columns[e.ColumnIndex].Name == "Button")
             {
-                // 例外の内容を表示します。
-                Console.WriteLine(ex);
+                MessageBox.Show(e.RowIndex.ToString() +
+                    "行のボタンがクリックされました。");
             }
+        }
 
-            //Console.ReadKey();
+        private void dataGridView1_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            // 表示されているコントロールがDataGridViewTextBoxEditingControlか調べる
+            if (e.Control is DataGridViewTextBoxEditingControl)
+            {
+                DataGridView dgv = (DataGridView)sender;
 
+                //編集のために表示されているコントロールを取得
+                DataGridViewTextBoxEditingControl tb =
+                    (DataGridViewTextBoxEditingControl)e.Control;
+                //次のようにしてもよい
+                //TextBox tb = (TextBox)e.Control;
 
-            //// SQL文をセットする
-            //cmd.CommandText = @"DELETE FROM contacts WHERE SelectedRows.Count > 0";
-
-            //    // DELETEを実行する
-            //    int cnt = cmd.ExecuteNonQuery();
-
-            //    // 処理件数を表示する
-            //    Console.WriteLine(cnt);
-
-
-
-
+                //列によってIMEのモードを変更する
+                if (dgv.CurrentCell.OwningColumn.Name == "Column1")
+                    tb.ImeMode = ImeMode.Disable;
+                else
+                    tb.ImeMode = dgv.ImeMode;
+            }
         }
     }
 }
