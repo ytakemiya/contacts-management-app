@@ -44,17 +44,6 @@ namespace contacts_management_app
             _top = myParent;
         }
 
-        //public UserControl2(DataGridView dataGridView1)
-        //{
-        //    //DataGridView1 = dataGridView1;
-        //}
-
-        enum StrKind
-        {
-            mix,    // 全角半角混在
-            full,   // 全角のみ
-            half    // 半角のみ
-        };
 
         private void TextBox3_TextChanged(object sender, EventArgs e)
         {

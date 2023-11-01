@@ -20,9 +20,13 @@ namespace contacts_management_app.Class
             //var connectionString = ConfigurationManager.ConnectionStrings["sqlsvr"].ConnectionString;
             var connectionString = "Data Source=DSP417;Initial Catalog=test_take;User ID=sql_takemiya;Password=sql_takemiya";
 
-           //Update()
-           //Insert()
-         // Delete();
+            //var builder = new SqlConnectionStringBuilder();
+            //builder.DataSource = @"DSP417;
+            //builder.InitialCatalog = test_take;
+            //builder.UserID = sql_takemiya;
+            //builder.Password = sql_takemiya;
+            //var connectionString = builder.Tostring();
+
 
             using (var connection = new SqlConnection(connectionString))
             using (var command = connection.CreateCommand())

@@ -22,11 +22,12 @@ namespace contacts_management_app
 {
     public partial class Top : Form
     {
+       
         private object ultaraGridExcelExpter1;
 
         ContactsTable ContactsTable1;
         ContactsTable dt;
-
+        
 
         public object ContactsTable { get; private set; }
 
@@ -40,7 +41,7 @@ namespace contacts_management_app
         private void TextBox1_TextChanged(object sender, EventArgs e)
         {
         }
-
+        
         /// <summary>
         /// dataGridView1に連絡先データをバインド
         /// </summary>
@@ -50,6 +51,7 @@ namespace contacts_management_app
             //ContactsTable dt = DBaccesser.GetData();
             dt = DBaccesser.GetData();
             dataGridView1.DataSource = dt;
+            
 
             // データを追加
             // ContactList contactlist = new ContactList();
@@ -70,6 +72,8 @@ namespace contacts_management_app
             dataGridView1.Columns[4].HeaderText = "メモ欄";
             //DataGridViewに追加する
             dataGridView1.Columns.Add(column);
+
+            
         }
 
         /// <summary>
@@ -84,6 +88,7 @@ namespace contacts_management_app
             ScreenTransitionTo(dataGridView1);
 
             ContactsTable = new ContactsTable();
+            
 
         }
 
@@ -122,6 +127,18 @@ namespace contacts_management_app
 
         public static void ExportButton_Click(object sender, EventArgs e)
         {
+            ////ファイル出力(保存)ダイアログ表示
+            //SaveFileDialog result = new SaveFileDialog();
+            //DialogResult FileOutput  = result.ShowDialog();
+
+            ////dataGridviewからデータ取得(Loop処理)
+            ////保存用のファイルを開く
+            //using(StreamWriter writer = new StreamWriter(@"C:\Users\y_takemiya\source\repos\contacts-management-app\test.csv", false, Encoding.GetEncoding("shift_jis")))
+            //{
+            //    int rowCount = DataGrid .Rows.Count;
+            //    //
+            //}
+
         }
 
 
@@ -166,33 +183,33 @@ namespace contacts_management_app
             //入力が空の場合
             //UserControl2.Visibile = false;
 
-            if (String.IsNullOrEmpty(textBox1.Text))
-            {
-                //  連絡先全件表示
-                ShowAllContacts();
-            }
-            //else if(条件2)数字取得で
-            //入力が電話番号かどうか
-            //電話番号の場合は
-            // 電話番号で連絡先検索
+            //if (String.IsNullOrEmpty(textBox1.Text))
+            //{
+            //    //  連絡先全件表示
+            //    ShowAllContacts();
+            //}
+            ////else if(条件2)数字取得で
+            ////入力が電話番号かどうか
+            ////電話番号の場合は
+            //// 電話番号で連絡先検索
 
-            else if (Regex.IsMatch(textBox1.Text, @"^[0-9]+$"))
-            {
-                //DBから連絡先データを持ってくる
-                //ContactsTable dt = 
-                //    DBaccesser.GetData($"SELECT * FROM contacts WHERE TEL LIKE '%{textBox1.Text}%'");
-                //dataGridView1.DataSource = dt;
-            }
+            //else if (Regex.IsMatch(textBox1.Text, @"^[0-9]+$"))
+            //{
+            //    //DBから連絡先データを持ってくる
+            //    //ContactsTable dt = 
+            //    //    DBaccesser.GetData($"SELECT * FROM contacts WHERE TEL LIKE '%{textBox1.Text}%'");
+            //    //dataGridView1.DataSource = dt;
+            //}
 
-            //入力が文字列のみ場合は
-            //　名前で連絡先検索
-            //else それ以外で
-            else
-            {
-                ////textBox1.Text = Select();
-                //ContactsTable dt = DBaccesser.GetData($"SELECT * FROM contacts WHERE NAME LIKE '%{textBox1.Text}%'");
-                //dataGridView1.DataSource = dt;
-            }
+            ////入力が文字列のみ場合は
+            ////　名前で連絡先検索
+            ////else それ以外で
+            //else
+            //{
+            //    ////textBox1.Text = Select();
+            //    //ContactsTable dt = DBaccesser.GetData($"SELECT * FROM contacts WHERE NAME LIKE '%{textBox1.Text}%'");
+            //    //dataGridView1.DataSource = dt;
+            //}
 
         }
 
