@@ -16,18 +16,22 @@ using ContactsTable = System.Data.DataTable;
 using System.Data.Common;
 using System.Data.SqlClient;
 using static System.ComponentModel.Design.ObjectSelectorEditor;
+using System.Collections.ObjectModel;
+using System.Windows;
+using Microsoft.VisualBasic.ApplicationServices;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 
 namespace contacts_management_app
 {
     public partial class Top : Form
     {
-       
+
         private object ultaraGridExcelExpter1;
 
         ContactsTable ContactsTable1;
         ContactsTable dt;
-        
+
 
         public object ContactsTable { get; private set; }
 
@@ -41,7 +45,7 @@ namespace contacts_management_app
         private void TextBox1_TextChanged(object sender, EventArgs e)
         {
         }
-        
+
         /// <summary>
         /// dataGridView1に連絡先データをバインド
         /// </summary>
@@ -51,7 +55,7 @@ namespace contacts_management_app
             //ContactsTable dt = DBaccesser.GetData();
             dt = DBaccesser.GetData();
             dataGridView1.DataSource = dt;
-            
+
 
             // データを追加
             // ContactList contactlist = new ContactList();
@@ -73,7 +77,7 @@ namespace contacts_management_app
             //DataGridViewに追加する
             dataGridView1.Columns.Add(column);
 
-            
+
         }
 
         /// <summary>
@@ -88,7 +92,7 @@ namespace contacts_management_app
             ScreenTransitionTo(dataGridView1);
 
             ContactsTable = new ContactsTable();
-            
+
 
         }
 
@@ -122,25 +126,144 @@ namespace contacts_management_app
         /// <param name="control"></param>
         private static void ScreenTransitionTo(Control control)
         {
-            control.BringToFront();
+            control.BringToFront();           
         }
 
-        public static void ExportButton_Click(object sender, EventArgs e)
+        private void ExportButton_Click(object sender, EventArgs e)
         {
-            ////ファイル出力(保存)ダイアログ表示
-            //SaveFileDialog result = new SaveFileDialog();
-            //DialogResult FileOutput  = result.ShowDialog();
+            string selectedPath = "";
 
-            ////dataGridviewからデータ取得(Loop処理)
-            ////保存用のファイルを開く
-            //using(StreamWriter writer = new StreamWriter(@"C:\Users\y_takemiya\source\repos\contacts-management-app\test.csv", false, Encoding.GetEncoding("shift_jis")))
-            //{
-            //    int rowCount = DataGrid .Rows.Count;
-            //    //
-            //}
+            using (FolderBrowserDialog dialog = new FolderBrowserDialog())
+            {
+                // 初期選択フォルダーが設定できる①
+                //dialog.SelectedPath = @"C:\User\";
+                // ファイル名を指定、取得する②
+                dialog.Description = @"ForOutput.csv";
 
+                // 新しくフォルダを作成を許可する②
+                dialog.ShowNewFolderButton = true;
+
+                // ダイアログを表示する。
+                DialogResult result = dialog.ShowDialog();
+                if (result == DialogResult.OK)
+                {
+                    // 選択されたフォルダを取得する
+                    selectedPath  = dialog.SelectedPath;
+
+                    MessageBox.Show(string.Format("{0}が選択されました", selectedPath));
+                }
+                else
+                {
+                    // キャンセルの場合は何もしない
+                }              
+                string msg = "";
+
+
+                // データがなければ処理を抜ける
+                if (dataGridView1.RowCount <= 0)
+                {
+                    msg = "出力データがありません。";
+                    MessageBox.Show(msg, "情報", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
+                //// 確認「はい」でなければ処理を抜ける
+                //msg = "CSVファイルを出力します。" + "\n" + "宜しいですか？";
+                //MessageBox.Show(msg, "確認", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                //if (result != DialogResult.Yes)
+                //{
+                //    return;
+                //}
+                //UTF8の上書きモードでファイルを開く
+                using (StreamWriter sw = new StreamWriter(selectedPath + @"ForOutput.csv", false, System.Text.Encoding.UTF8))
+                {
+                    // ワーク文字列言
+                    string s = "";
+
+                    // ヘッダー出力
+                    // 行ループ
+                    for (int iCol = 0; iCol < dataGridView1.Columns.Count; iCol++)
+                    {
+
+                        // ヘッダーの値を取得する
+                        String sCell = dataGridView1.Columns[iCol].HeaderCell.Value.ToString();
+
+                        // 2列目以降ならワーク文字列に「,」を追加する
+                        if (iCol > 0)
+                        {
+                            s += ",";
+                        }
+                        
+                        
+                       //this.dataGridView1.Columns["Button"].Visible = false;
+                        
+
+                        // ワーク文字列にセルの値を追加する
+                        s += quoteCommaCheck(sCell);
+
+                        
+                    }
+                    // ワーク文字列をファイルに出力する
+                    sw.WriteLine(s);
+
+                    // データ出力
+                    // 行ループ
+                    for (int iRow = 0; iRow < dataGridView1.Rows.Count; iRow++)
+                    {
+                        // ワーク文字初期化
+                        s = "";
+
+                        // 列ループ
+                        for (int iCol = 0; iCol < dataGridView1.Columns.Count; iCol++)
+                        {
+                            // セルの値を取得する
+                            String sCell = dataGridView1[iCol, iRow].Value.ToString();
+
+                            // 2列目以降ならワーク文字列に「,」を追加する
+                            if (iCol > 0)
+                            {
+                                s += ",";
+                            }
+
+                            // ワーク文字列にセルの値を追加する
+                            s += quoteCommaCheck(sCell);
+
+                        }
+                        // ワーク文字列をファイルに出力する
+                        sw.WriteLine(s);
+                        //}
+                    }
+                    msg = "CSV出力が完了しました。";
+                    MessageBox.Show(msg, "情報", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+
+                }               
+            }
         }
+        /// <summary>
+        /// カンマ区切りを文字列とみなす
+        /// </summary>
+        /// <param name="sCell"></param>
+        /// <returns></returns>
+         private string quoteCommaCheck(string sCell)
+         {
+            const string QUOTE = @""""; // 「"」
+            const string COMMA = @",";  // 「,」
 
+            // OR検索用文字列
+            string[] a = new string[] { QUOTE, COMMA };
+
+            // セルの値に「”」か「,」が含まれていないか判定する
+            if (a.Any(sCell.Contains))
+            {
+                // 「"」を「"」で囲む
+                sCell = sCell.Replace(QUOTE, QUOTE + QUOTE);
+
+                // セルの値を「"」で囲む
+                sCell = QUOTE + sCell + QUOTE;
+            }
+            return sCell;
+         }
 
         private void SearchButton_Click(object sender, EventArgs e)
         {
@@ -175,41 +298,6 @@ namespace contacts_management_app
                     DBaccesser.GetData(excuteQuery);
             dataGridView1.DataSource = dt;
 
-            //ここにボタンクリック時の処理を記載する。
-            // ボタンがクリックされたときに呼び出されるメソッド
-            //if (条件検索ボックスが空の場合           
-            //リストを全表示する
-            //入力が空か判断する
-            //入力が空の場合
-            //UserControl2.Visibile = false;
-
-            //if (String.IsNullOrEmpty(textBox1.Text))
-            //{
-            //    //  連絡先全件表示
-            //    ShowAllContacts();
-            //}
-            ////else if(条件2)数字取得で
-            ////入力が電話番号かどうか
-            ////電話番号の場合は
-            //// 電話番号で連絡先検索
-
-            //else if (Regex.IsMatch(textBox1.Text, @"^[0-9]+$"))
-            //{
-            //    //DBから連絡先データを持ってくる
-            //    //ContactsTable dt = 
-            //    //    DBaccesser.GetData($"SELECT * FROM contacts WHERE TEL LIKE '%{textBox1.Text}%'");
-            //    //dataGridView1.DataSource = dt;
-            //}
-
-            ////入力が文字列のみ場合は
-            ////　名前で連絡先検索
-            ////else それ以外で
-            //else
-            //{
-            //    ////textBox1.Text = Select();
-            //    //ContactsTable dt = DBaccesser.GetData($"SELECT * FROM contacts WHERE NAME LIKE '%{textBox1.Text}%'");
-            //    //dataGridView1.DataSource = dt;
-            //}
 
         }
 
@@ -363,8 +451,8 @@ namespace contacts_management_app
 
 
             }
-        }
 
+        }
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             DataGridView dgv = (DataGridView)sender;
@@ -395,7 +483,7 @@ namespace contacts_management_app
         //        else
         //            tb.ImeMode = dgv.ImeMode;
         //    }
-        
     }
+    
 }
 
