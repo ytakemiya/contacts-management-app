@@ -20,6 +20,7 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using Microsoft.VisualBasic.ApplicationServices;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolBar;
 
 
 namespace contacts_management_app
@@ -62,12 +63,19 @@ namespace contacts_management_app
             // dataGridView1.DataSource = contactlist.Data;
             //DataGridViewButtonColumnの作成
             DataGridViewButtonColumn column = new DataGridViewButtonColumn();
+            DataGridViewButtonColumn column1 = new DataGridViewButtonColumn();
+            DataGridViewButtonColumn column2 = new DataGridViewButtonColumn();
             //列の名前を設定
-            column.Name = "Button";
+            column.Name = "EditButton";
+            column1.Name = "UpdateButton";
+            column2.Name = "CancelButton";
             //全てのボタンに"編集と表示する
             column.UseColumnTextForButtonValue = true;
+            column1.UseColumnTextForButtonValue = true;
+            column2.UseColumnTextForButtonValue = true;
             column.Text = "編集";
-
+            column1.Text = "更新";
+            column2.Text = "キャンセル";
             // カラム名を指定
             dataGridView1.Columns[0].HeaderText = "ID";
             dataGridView1.Columns[1].HeaderText = "名前";
@@ -76,8 +84,10 @@ namespace contacts_management_app
             dataGridView1.Columns[4].HeaderText = "メモ欄";
             //DataGridViewに追加する
             dataGridView1.Columns.Add(column);
+            dataGridView1.Columns.Add(column1);
+            dataGridView1.Columns.Add(column2);
 
-
+           
         }
 
         /// <summary>
@@ -126,7 +136,7 @@ namespace contacts_management_app
         /// <param name="control"></param>
         private static void ScreenTransitionTo(Control control)
         {
-            control.BringToFront();           
+            control.BringToFront();
         }
 
         private void ExportButton_Click(object sender, EventArgs e)
@@ -148,14 +158,14 @@ namespace contacts_management_app
                 if (result == DialogResult.OK)
                 {
                     // 選択されたフォルダを取得する
-                    selectedPath  = dialog.SelectedPath;
+                    selectedPath = dialog.SelectedPath;
 
                     MessageBox.Show(string.Format("{0}が選択されました", selectedPath));
                 }
                 else
                 {
                     // キャンセルの場合は何もしない
-                }              
+                }
                 string msg = "";
 
 
@@ -193,15 +203,15 @@ namespace contacts_management_app
                         {
                             s += ",";
                         }
-                        
-                        
-                       //this.dataGridView1.Columns["Button"].Visible = false;
-                        
+
+
+                        //this.dataGridView1.Columns["Button"].Visible = false;
+
 
                         // ワーク文字列にセルの値を追加する
                         s += quoteCommaCheck(sCell);
 
-                        
+
                     }
                     // ワーク文字列をファイルに出力する
                     sw.WriteLine(s);
@@ -237,7 +247,7 @@ namespace contacts_management_app
                     MessageBox.Show(msg, "情報", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
 
-                }               
+                }
             }
         }
         /// <summary>
@@ -245,8 +255,8 @@ namespace contacts_management_app
         /// </summary>
         /// <param name="sCell"></param>
         /// <returns></returns>
-         private string quoteCommaCheck(string sCell)
-         {
+        private string quoteCommaCheck(string sCell)
+        {
             const string QUOTE = @""""; // 「"」
             const string COMMA = @",";  // 「,」
 
@@ -263,7 +273,7 @@ namespace contacts_management_app
                 sCell = QUOTE + sCell + QUOTE;
             }
             return sCell;
-         }
+        }
 
         private void SearchButton_Click(object sender, EventArgs e)
         {
@@ -455,13 +465,40 @@ namespace contacts_management_app
         }
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
+            //DataGridViewButtonColumn column = new DataGridViewButtonColumn();
+
             DataGridView dgv = (DataGridView)sender;
             //"Button"列ならば、ボタンがクリックされた
-            if (dgv.Columns[e.ColumnIndex].Name == "Button")
+            if (dgv.Columns[e.ColumnIndex].Name == "EditButton")
             {
-                MessageBox.Show(e.RowIndex.ToString() +
-                    "行のボタンがクリックされました。");
+                //MessageBox.Show(e.RowIndex.ToString() +
+                //     "行のボタンがクリックされました。");
+
+                //TODO:datagridview全非表示のため、クリックしたcolumnButton(編集)を非表示にする
+                //ボタン非表示
+                //dgv.Visible = false;
+
             }
+            //編集ボタンが押された行を編集可能にする
+            dgv.ReadOnly = false;
+
+        }
+
+
+
+        private void dataGridView1_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            //DataGridViewButtonColumn column = new DataGridViewButtonColumn();
+            //DataGridView dgv = (DataGridView)sender;
+            
+            ////編集ボタンが押された行を編集可能にする
+            //dgv.ReadOnly = false;
+
+            //////column.UseColumnTextForButtonValue = true;
+            //////column.Text = "編集";
+
+            ////ボタン非表示
+            //column.Visible = false;
         }
 
         //private void dataGridView1_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
@@ -484,6 +521,6 @@ namespace contacts_management_app
         //            tb.ImeMode = dgv.ImeMode;
         //    }
     }
-    
+
 }
 
