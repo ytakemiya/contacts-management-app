@@ -21,6 +21,7 @@ using System.Windows;
 using Microsoft.VisualBasic.ApplicationServices;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolBar;
+using System.IO;
 
 
 namespace contacts_management_app
@@ -87,7 +88,7 @@ namespace contacts_management_app
             dataGridView1.Columns.Add(column1);
             dataGridView1.Columns.Add(column2);
 
-           
+
         }
 
         /// <summary>
@@ -414,7 +415,7 @@ namespace contacts_management_app
 
                 // 接続文字列
                 SqlConnection con = new("Data Source=DSP417; Initial Catalog=test_take; uid=sql_takemiya; pwd=sql_takemiya");
-                // データ削除のSQL
+
 
                 // SQL文をセットする
                 string query = String.Format(@"DELETE FROM contacts WHERE ID = @ID");
@@ -471,55 +472,115 @@ namespace contacts_management_app
             //"Button"列ならば、ボタンがクリックされた
             if (dgv.Columns[e.ColumnIndex].Name == "EditButton")
             {
-                //MessageBox.Show(e.RowIndex.ToString() +
-                //     "行のボタンがクリックされました。");
+                //編集ボタンが押された行を編集可能にする
+                dgv.ReadOnly = false;
+                //行単位で選択をする
+                dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
 
                 //TODO:datagridview全非表示のため、クリックしたcolumnButton(編集)を非表示にする
                 //ボタン非表示
                 //dgv.Visible = false;
 
             }
-            //編集ボタンが押された行を編集可能にする
-            dgv.ReadOnly = false;
+            //"Button"列ならば、ボタンがクリックされた
+            else if (dgv.Columns[e.ColumnIndex].Name == "UpdateButton")
+            {
+                //各セルの値を取得する
+                //dataGridView dgv = SelectedCells(0).RowIndex;
+                //// 接続文字列を指定してデータベースを指定
+                SqlConnection con = new("Data Source=DSP417; Initial Catalog=test_take; uid=sql_takemiya; pwd=sql_takemiya");
+                // データ更新のSQL
+                string query = String.Format("@UPDATE contacts SET name=@name WHERE id=@id");
+                try
+                {
+                    // コマンドを取得する
+                    using (SqlCommand cmd = con.CreateCommand())
+                    {
 
-        }
+                        // コネクションをオープンする
+                        con.Open();
+
+                        //// データ更新のSQLを実行します
+                        //cmd.CommandText = query;
+                        //cmd.Parameters.Add(new SqlParameter("@ID", sqlDbType.Int, 4, "ID");
+                        //cmd.Parameters.Add(new SqlParameter("@NAME", sqlDbType.NVarChar, 50, "NAME");
+                        //var result = cmd.ExecuteNonQuery();
 
 
+                        //    }
 
-        private void dataGridView1_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+
+                    }
+                }
+                // 例外が発生した場合
+                catch (SqlException ex)
+                {
+                    // 例外の内容を表示します。
+                    Console.WriteLine(ex);
+                }
+            }
+
+            else if (dgv.Columns[e.ColumnIndex].Name == "CancelButton")
+            {
+
+            }
+
+        } 
+
+        private void dataGridView1_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
         {
-            //DataGridViewButtonColumn column = new DataGridViewButtonColumn();
-            //DataGridView dgv = (DataGridView)sender;
-            
-            ////編集ボタンが押された行を編集可能にする
-            //dgv.ReadOnly = false;
+            DataGridView dgv = (DataGridView)sender;
 
-            //////column.UseColumnTextForButtonValue = true;
-            //////column.Text = "編集";
+            //新しい行のセルでなく、セルの内容が変更されている時だけ検証する
+            if (e.RowIndex == dgv.NewRowIndex || !dgv.IsCurrentCellDirty)
+            {
+                return;
+            }
 
-            ////ボタン非表示
-            //column.Visible = false;
+            if (dgv.Columns[e.ColumnIndex].Name == "Column1" &&
+                e.FormattedValue.ToString() == "")
+            {
+                //行にエラーテキストを設定
+                dgv.Rows[e.RowIndex].ErrorText = "値が入力されていません。";
+                //入力した値をキャンセルして元に戻すには、次のようにする
+                //dgv.CancelEdit();
+                //キャンセルする
+                e.Cancel = true;
+            }
+
+        }
+        //CellValidatedイベントハンドラ
+        private void DataGridView1_CellValidated(object sender,
+            DataGridViewCellEventArgs e)
+        {
+            DataGridView dgv = (DataGridView)sender;
+            //エラーテキストを消す
+            dgv.Rows[e.RowIndex].ErrorText = null;
+
+
+
+
         }
 
-        //private void dataGridView1_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
-        //{
-        //    // 表示されているコントロールがDataGridViewTextBoxEditingControlか調べる
-        //    if (e.Control is DataGridViewTextBoxEditingControl)
-        //    {
-        //        DataGridView dgv = (DataGridView)sender;
+        private void dataGridView1_CurrentCellChanged(object sender, EventArgs e)
+        {
+            var dgv = (DataGridView)sender;
+            if (dgv.IsCurrentCellDirty)
+            {
+                dgv.CommitEdit(DataGridViewDataErrorContexts.Commit);
+            }
+        }
 
-        //        //編集のために表示されているコントロールを取得
-        //        DataGridViewTextBoxEditingControl tb =
-        //            (DataGridViewTextBoxEditingControl)e.Control;
-        //        //次のようにしてもよい
-        //        //TextBox tb = (TextBox)e.Control;
+        private void dataGridView1_CurrentCellDirtyStateChanged(object sender, EventArgs e)
+        {
 
-        //        //列によってIMEのモードを変更する
-        //        if (dgv.CurrentCell.OwningColumn.Name == "Column1")
-        //            tb.ImeMode = ImeMode.Disable;
-        //        else
-        //            tb.ImeMode = dgv.ImeMode;
-        //    }
+        }
+
+        private void dataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            // Update the balance column whenever the value of any cell changes.
+            //UpdateBalance();
+        }
     }
 
 }
