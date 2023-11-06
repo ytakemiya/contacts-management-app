@@ -90,35 +90,35 @@ namespace contacts_management_app.Class
                 connection.Close();
             }
         }
-        //public static void UpdateData()
-        //{
-        //    var table = new DataTable();
-        //    //接続文字列
-        //    var connectionString = "Data Source=DSP417;Initial Catalog=test_take;User ID=sql_takemiya;Password=sql_takemiya";
+        public static void UpdateData()
+        {
+            var table = new DataTable();
+            //接続文字列
+            var connectionString = "Data Source=DSP417;Initial Catalog=test_take;User ID=sql_takemiya;Password=sql_takemiya";
 
-        //    using var connection = new SqlConnection(connectionString);
-        //    using var command = connection.CreateCommand();
-        //    try
-        //    {
+            using var connection = new SqlConnection(connectionString);
+            using var command = connection.CreateCommand();
+            try
+            {
 
-        //        // データベースの接続開始
-        //        connection.Open();
+                // データベースの接続開始
+                connection.Open();
 
-        //        command.CommandText = @"UPDATE contacts SET col1 = @col1 WHERE ID = @ID";
+                command.CommandText = @"UPDATE contacts SET NAME='野口英世' WHERE NAME='takemiya'";
 
-        //        // SQLの実行
-        //        command.ExecuteNonQuery();    
-        //    }
-        //    catch ((Exception exception)
-        //    {
-        //        Console.WriteLine(exception.Message);
-        //        throw;
-        //    }
-        //    finally
-        //    {
-        //        // データベースの接続終了
-        //        connection.Close();
-        //    }
-        //}
+                // SQLの実行
+                command.ExecuteNonQuery();
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.Message);
+                throw;
+            }
+            finally
+            {
+                // データベースの接続終了
+                connection.Close();
+            }
+        }
     }
 }

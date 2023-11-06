@@ -490,7 +490,7 @@ namespace contacts_management_app
                 //// 接続文字列を指定してデータベースを指定
                 SqlConnection con = new("Data Source=DSP417; Initial Catalog=test_take; uid=sql_takemiya; pwd=sql_takemiya");
                 // データ更新のSQL
-                string query = String.Format("@UPDATE contacts SET name=@name WHERE id=@id");
+                string query = String.Format(@"UPDATE contacts SET NAME='野口英世' WHERE NAME='takemiya'");
                 try
                 {
                     // コマンドを取得する
@@ -501,13 +501,15 @@ namespace contacts_management_app
                         con.Open();
 
                         //// データ更新のSQLを実行します
-                        //cmd.CommandText = query;
+                        cmd.CommandText = query;
                         //cmd.Parameters.Add(new SqlParameter("@ID", sqlDbType.Int, 4, "ID");
                         //cmd.Parameters.Add(new SqlParameter("@NAME", sqlDbType.NVarChar, 50, "NAME");
                         //var result = cmd.ExecuteNonQuery();
+                        //レコードを削除するためのSQL文を作成
+                        //string Delete_SQL = "delete from contacts where NAME = '武宮勇貴'";
 
-
-                        //    }
+                        //すでにあるMySQLコマンドのSQL文を差し替え
+                        //cmd.CommandText = Delete_SQL;
 
 
                     }
@@ -525,7 +527,7 @@ namespace contacts_management_app
 
             }
 
-        } 
+        }
 
         private void dataGridView1_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
         {
@@ -580,6 +582,11 @@ namespace contacts_management_app
         {
             // Update the balance column whenever the value of any cell changes.
             //UpdateBalance();
+        }
+
+        private void dataGridView1_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 

@@ -271,7 +271,7 @@
             dataGridView1.Size = new Size(742, 533);
             dataGridView1.TabIndex = 23;
             dataGridView1.CellClick += dataGridView1_CellContentClick;
-            dataGridView1.CellContentClick += dataGridView1_CellContentClick;
+            dataGridView1.CellContentClick += dataGridView1_CellContentClick_1;
             dataGridView1.CellValueChanged += dataGridView1_CellValueChanged;
             dataGridView1.CurrentCellChanged += dataGridView1_CurrentCellChanged;
             dataGridView1.CurrentCellDirtyStateChanged += dataGridView1_CurrentCellDirtyStateChanged;

@@ -245,5 +245,10 @@ namespace contacts_management_app
         {
 
         }
+
+        private void UserControl2_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
