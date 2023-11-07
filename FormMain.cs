@@ -363,17 +363,7 @@ namespace contacts_management_app
 
         }
 
-        private void Panel2_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
         private void Tellabel_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void Panel2_Paint_1(object sender, PaintEventArgs e)
         {
 
         }
@@ -465,6 +455,8 @@ namespace contacts_management_app
 
         }
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        //private void dataGridView1_DataSourceChanged(object sender, EventArgs e)
+        //private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             //DataGridViewButtonColumn column = new DataGridViewButtonColumn();
 
@@ -490,7 +482,10 @@ namespace contacts_management_app
                 //// 接続文字列を指定してデータベースを指定
                 SqlConnection con = new("Data Source=DSP417; Initial Catalog=test_take; uid=sql_takemiya; pwd=sql_takemiya");
                 // データ更新のSQL
-                string query = String.Format(@"UPDATE contacts SET NAME='野口英世' WHERE NAME='takemiya'");
+                DBaccesser.UpdateData();
+
+                string query = String.Format(@"UPDATE contacts SET TEL= 07032138746  WHERE TEL= 1234567890");
+                //string query = String.Format(@"UPDATE contacts SET NAME= 'takemiya' WHERE NAME= '徳川家康'");
                 try
                 {
                     // コマンドを取得する
@@ -510,7 +505,11 @@ namespace contacts_management_app
 
                         //すでにあるMySQLコマンドのSQL文を差し替え
                         //cmd.CommandText = Delete_SQL;
-
+                        //ShowAllContacts();
+                        // DBから連絡先データを持ってくる
+                        //ContactsTable dt = DBaccesser.GetData();
+                        dt = DBaccesser.GetData();
+                        dataGridView1.DataSource = dt;
 
                     }
                 }
@@ -524,45 +523,11 @@ namespace contacts_management_app
 
             else if (dgv.Columns[e.ColumnIndex].Name == "CancelButton")
             {
-
-            }
-
-        }
-
-        private void dataGridView1_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
-        {
-            DataGridView dgv = (DataGridView)sender;
-
-            //新しい行のセルでなく、セルの内容が変更されている時だけ検証する
-            if (e.RowIndex == dgv.NewRowIndex || !dgv.IsCurrentCellDirty)
-            {
                 return;
             }
-
-            if (dgv.Columns[e.ColumnIndex].Name == "Column1" &&
-                e.FormattedValue.ToString() == "")
-            {
-                //行にエラーテキストを設定
-                dgv.Rows[e.RowIndex].ErrorText = "値が入力されていません。";
-                //入力した値をキャンセルして元に戻すには、次のようにする
-                //dgv.CancelEdit();
-                //キャンセルする
-                e.Cancel = true;
-            }
-
+            
         }
-        //CellValidatedイベントハンドラ
-        private void DataGridView1_CellValidated(object sender,
-            DataGridViewCellEventArgs e)
-        {
-            DataGridView dgv = (DataGridView)sender;
-            //エラーテキストを消す
-            dgv.Rows[e.RowIndex].ErrorText = null;
 
-
-
-
-        }
 
         private void dataGridView1_CurrentCellChanged(object sender, EventArgs e)
         {
@@ -573,21 +538,7 @@ namespace contacts_management_app
             }
         }
 
-        private void dataGridView1_CurrentCellDirtyStateChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void dataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
-        {
-            // Update the balance column whenever the value of any cell changes.
-            //UpdateBalance();
-        }
-
-        private void dataGridView1_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
+        
     }
 
 }
