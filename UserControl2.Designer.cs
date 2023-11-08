@@ -178,8 +178,6 @@
             MAILtextBox.Size = new Size(147, 23);
             MAILtextBox.TabIndex = 6;
             MAILtextBox.TextChanged += MAILtextBox_TextChanged;
-            MAILtextBox.Validating += MAILtextBox_Validating;
-            MAILtextBox.Validated += MAILtextBox_Validated;
             // 
             // TELtextBox
             // 

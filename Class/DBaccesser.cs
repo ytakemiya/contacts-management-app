@@ -104,8 +104,8 @@ namespace contacts_management_app.Class
                 // データベースの接続開始
                 connection.Open();
 
-                command.CommandText = @"UPDATE contacts SET ID = @ID, NAME = @NAME, TEL = @TEL, MAIL = @MAIL, MEMO = @MEME WHERE ID = @ID, NAME = @NAME, TEL = @TEL, MAIL = @MAIL, MEMO = @MEME";
-
+                //command.CommandText = @"UPDATE contacts SET ID = @ID, NAME = @NAME, TEL = @TEL, MAIL = @MAIL, MEMO = @MEME WHERE ID = @ID, NAME = @NAME, TEL = @TEL, MAIL = @MAIL, MEMO = @MEME";
+                command.CommandText = @"UPDATE contacts SET NAME= '堀江'  WHERE ID = '1057'";
                 // SQLの実行
                 command.ExecuteNonQuery();
             }

@@ -152,8 +152,17 @@ namespace contacts_management_app
         }
         private void TELtextBox_TextChanged(object sender, EventArgs e)
         {
-            // 0-9のみ
-            //TELtextBox = !new Regex.IsMatch("^[0-9]+$");
+            ////バックスペースが押された時は有効（Deleteキーも有効）
+            //if (e.KeyChar == '\b')
+            //{
+            //    return;
+            //}
+
+            ////数値0～9以外が押された時はイベントをキャンセルする
+            //if ((e.KeyChar < '0' || '9' < e.KeyChar))
+            //{
+            //    e.Handled = true;
+            //}
         }
 
         private void MAILtextBox_TextChanged(object sender, EventArgs e)
@@ -178,31 +187,6 @@ namespace contacts_management_app
             }
         }
 
-        private void MAILtextBox_Validating(object sender, CancelEventArgs e)
-        {
-            string text = MAILtextBox.Text;
-            // 空白の場合はそのまま
-            if (text.Length == 0)
-                return;
-
-            // ひらがなと空白のみ
-            Regex rx = new(@"^[^@\s]+[@]([^.\s]+[.]){1,}[^.\s]+$");
-            if (!rx.IsMatch(text))
-            {
-
-                // _ = ErrorProvider1.SetError(MAILtextBox, "正しくないメールアドレスの形式です");
-
-                // e.Cancel = true;
-
-            }
-        }
-
-        private void MAILtextBox_Validated(object sender, EventArgs e)
-        {
-            // 検証済みの場合はエラーをクリアする
-            //this.errorProvider1.SetError(MAILtextBox, null);
-
-        }
 
         /// <summary>
         /// キャンセルボタンクリック

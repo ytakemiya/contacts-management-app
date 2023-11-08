@@ -88,7 +88,11 @@ namespace contacts_management_app
             dataGridView1.Columns.Add(column1);
             dataGridView1.Columns.Add(column2);
 
-
+            for (int i = 0; i < dataGridView1.RowCount; i++)
+            {
+                dataGridView1.Rows[i].ReadOnly = true;
+            }
+            //dgv.Rows[e.RowIndex].ReadOnly = false;
         }
 
         /// <summary>
@@ -216,6 +220,14 @@ namespace contacts_management_app
                     }
                     // ワーク文字列をファイルに出力する
                     sw.WriteLine(s);
+
+                    //追加行を除く行数を求める
+                    //int maxRowsCount = dataGridView1.Rows.Count;
+                    //if (dataGridView1.AllowUserToAddRows)
+                    //{
+                    //    追加行が含まれているので、そのカウントを除く
+                    //   maxRowsCount = maxRowsCount - 3;
+                    //}
 
                     // データ出力
                     // 行ループ
@@ -461,13 +473,20 @@ namespace contacts_management_app
             //DataGridViewButtonColumn column = new DataGridViewButtonColumn();
 
             DataGridView dgv = (DataGridView)sender;
+
             //"Button"列ならば、ボタンがクリックされた
             if (dgv.Columns[e.ColumnIndex].Name == "EditButton")
             {
                 //編集ボタンが押された行を編集可能にする
-                dgv.ReadOnly = false;
+                dgv.Rows[e.RowIndex].ReadOnly = false;
                 //行単位で選択をする
                 dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+
+                //ヘッダーを含まないすべてのセルの背景色を黄色にする
+                dgv.RowsDefaultCellStyle.BackColor = Color.Yellow;
+                //セルスタイルを変更する
+                //dgv[e.ColumnIndex, e.RowIndex].Style.BackColor = Color.Red;
+                //dgv[e.ColumnIndex, e.RowIndex].Style.SelectionBackColor = Color.Red;
 
                 //TODO:datagridview全非表示のため、クリックしたcolumnButton(編集)を非表示にする
                 //ボタン非表示
@@ -479,13 +498,14 @@ namespace contacts_management_app
             {
                 //各セルの値を取得する
                 //dataGridView dgv = SelectedCells(0).RowIndex;
+                
                 //// 接続文字列を指定してデータベースを指定
                 SqlConnection con = new("Data Source=DSP417; Initial Catalog=test_take; uid=sql_takemiya; pwd=sql_takemiya");
                 // データ更新のSQL
                 DBaccesser.UpdateData();
 
-                string query = String.Format(@"UPDATE contacts SET TEL= 07032138746  WHERE TEL= 1234567890");
-                //string query = String.Format(@"UPDATE contacts SET NAME= 'takemiya' WHERE NAME= '徳川家康'");
+                string query = String.Format(@"UPDATE contacts SET Mail= 'komadatai0111@gmail.com'  WHERE ID = '1055'");
+                //string query = String.Format(@"UPDATE contacts SET NAME= '堀江'  WHERE ID = '1057'");
                 try
                 {
                     // コマンドを取得する
@@ -525,7 +545,7 @@ namespace contacts_management_app
             {
                 return;
             }
-            
+
         }
 
 
@@ -538,7 +558,18 @@ namespace contacts_management_app
             }
         }
 
-        
+        //private void dataGridView1_CellMouseLeave(object sender, DataGridViewCellEventArgs e)
+        //{
+        //    //ヘッダー以外のセル
+        //    if (e.ColumnIndex >= 0 && e.RowIndex >= 0)
+        //    {
+        //        DataGridView dgv = (DataGridView)sender;
+        //        //セルスタイルを元に戻す
+        //        //セルスタイルを削除するなら、nullを設定してもよい
+        //        dgv[e.ColumnIndex, e.RowIndex].Style.BackColor = Color.Empty;
+        //        dgv[e.ColumnIndex, e.RowIndex].Style.SelectionBackColor = Color.Empty;
+        //    }
+        //}
     }
 
 }
