@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             SearchButton = new Button();
             textBox1 = new TextBox();
             AddButton = new Button();
@@ -263,6 +264,15 @@
             dataGridView1.AllowUserToOrderColumns = true;
             dataGridView1.BackgroundColor = SystemColors.Info;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = SystemColors.Window;
+            dataGridViewCellStyle1.Font = new Font("Yu Gothic UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle1.ForeColor = Color.Black;
+            dataGridViewCellStyle1.SelectionBackColor = Color.MediumTurquoise;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.False;
+            dataGridView1.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridView1.EditMode = DataGridViewEditMode.EditOnEnter;
             dataGridView1.Location = new Point(160, 91);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.AutoSizeToDisplayedHeaders;
@@ -270,8 +280,8 @@
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridView1.Size = new Size(742, 533);
             dataGridView1.TabIndex = 23;
+            //dataGridView1.CellBeginEdit += dataGridView1_CellBeginEdit;
             dataGridView1.CellContentClick += dataGridView1_CellContentClick;
-            //dataGridView1.CellMouseLeave += dataGridView1_CellMouseLeave;
             dataGridView1.CurrentCellChanged += dataGridView1_CurrentCellChanged;
             // 
             // Top

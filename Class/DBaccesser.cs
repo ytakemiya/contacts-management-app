@@ -14,11 +14,18 @@ namespace contacts_management_app.Class
 {
     internal class DBaccesser
     {
+    ////    public static connectionString_method(strng Dat)
+    ////    {
+    ////        connectionString_method();
+    //          var connectionString = "Data Source=DSP417;Initial Catalog=test_take;User ID=sql_takemiya;Password=sql_takemiya";
 
+
+    ////    }
         public static DataTable GetData(string sqlQuery = @"SELECT * FROM contacts")
         {
             var table = new DataTable();
 
+  
             // 接続文字列の取得
             //var connectionString = ConfigurationManager.ConnectionStrings["sqlsvr"].ConnectionString;
             var connectionString = "Data Source=DSP417;Initial Catalog=test_take;User ID=sql_takemiya;Password=sql_takemiya";
@@ -60,7 +67,9 @@ namespace contacts_management_app.Class
 
             return table;
         }
-        public static void InsertData() {
+        public static void Insertdata(){
+
+            var table = new DataTable();
             //接続文字列
             var connectionString = "Data Source=DSP417;Initial Catalog=test_take;User ID=sql_takemiya;Password=sql_takemiya";
 

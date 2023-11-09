@@ -128,9 +128,10 @@
             MEMOtextBox.Location = new Point(144, 185);
             MEMOtextBox.MaxLength = 20;
             MEMOtextBox.Name = "MEMOtextBox";
+            MEMOtextBox.ReadOnly = true;
             MEMOtextBox.Size = new Size(306, 23);
             MEMOtextBox.TabIndex = 4;
-            MEMOtextBox.TextChanged += TextBox1_TextChanged;
+            MEMOtextBox.TextChanged += MemoTextBox_TextChanged;
             // 
             // label3
             // 

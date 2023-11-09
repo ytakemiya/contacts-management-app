@@ -50,11 +50,6 @@ namespace contacts_management_app
 
         }
 
-        private void TextBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void Label4_Click(object sender, EventArgs e)
         {
 
@@ -73,7 +68,6 @@ namespace contacts_management_app
         {
             string query = String.Format("INSERT INTO [contacts] ( NAME, TEL, MAIL, MEMO ) VALUES ( '{0}','{1}','{2}','{3}' );", NAMEtextBox.Text, TELtextBox.Text, MAILtextBox.Text, MEMOtextBox.Text);
             // 接続文字列を指定してデータベースを指定
-            //using (SqlConnection con = new SqlConnection("Data Source=DSP417; Initial Catalog=test_take; uid=sql_takemiya; pwd=sql_takemiya"))
             SqlConnection con = new("Data Source=DSP417; Initial Catalog=test_take; uid=sql_takemiya; pwd=sql_takemiya");
 
             try
@@ -231,6 +225,11 @@ namespace contacts_management_app
         }
 
         private void UserControl2_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void MemoTextBox_TextChanged(object sender, EventArgs e)
         {
 
         }

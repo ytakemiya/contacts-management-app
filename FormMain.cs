@@ -67,9 +67,9 @@ namespace contacts_management_app
             DataGridViewButtonColumn column1 = new DataGridViewButtonColumn();
             DataGridViewButtonColumn column2 = new DataGridViewButtonColumn();
             //列の名前を設定
-            column.Name = "EditButton";
-            column1.Name = "UpdateButton";
-            column2.Name = "CancelButton";
+            column.Name = "編集";
+            column1.Name = "更新";
+            column2.Name = "キャンセル";
             //全てのボタンに"編集と表示する
             column.UseColumnTextForButtonValue = true;
             column1.UseColumnTextForButtonValue = true;
@@ -87,12 +87,15 @@ namespace contacts_management_app
             dataGridView1.Columns.Add(column);
             dataGridView1.Columns.Add(column1);
             dataGridView1.Columns.Add(column2);
+            dataGridView1.Columns[6].Visible = false;
+            dataGridView1.Columns[7].Visible = false;
 
             for (int i = 0; i < dataGridView1.RowCount; i++)
             {
                 dataGridView1.Rows[i].ReadOnly = true;
             }
             //dgv.Rows[e.RowIndex].ReadOnly = false;
+            
         }
 
         /// <summary>
@@ -195,11 +198,13 @@ namespace contacts_management_app
                     // ワーク文字列言
                     string s = "";
 
+                    //CountIndex = dataGridView1.Columns["編集"].Index; 
+
                     // ヘッダー出力
                     // 行ループ
-                    for (int iCol = 0; iCol < dataGridView1.Columns.Count; iCol++)
+                    for (int iCol = 0; iCol < dataGridView1.Columns["編集"].Index; iCol++)
                     {
-
+                        
                         // ヘッダーの値を取得する
                         String sCell = dataGridView1.Columns[iCol].HeaderCell.Value.ToString();
 
@@ -209,25 +214,13 @@ namespace contacts_management_app
                             s += ",";
                         }
 
-
-                        //this.dataGridView1.Columns["Button"].Visible = false;
-
-
                         // ワーク文字列にセルの値を追加する
                         s += quoteCommaCheck(sCell);
-
 
                     }
                     // ワーク文字列をファイルに出力する
                     sw.WriteLine(s);
 
-                    //追加行を除く行数を求める
-                    //int maxRowsCount = dataGridView1.Rows.Count;
-                    //if (dataGridView1.AllowUserToAddRows)
-                    //{
-                    //    追加行が含まれているので、そのカウントを除く
-                    //   maxRowsCount = maxRowsCount - 3;
-                    //}
 
                     // データ出力
                     // 行ループ
@@ -237,7 +230,7 @@ namespace contacts_management_app
                         s = "";
 
                         // 列ループ
-                        for (int iCol = 0; iCol < dataGridView1.Columns.Count; iCol++)
+                        for (int iCol = 0; iCol < dataGridView1.Columns["編集"].Index; iCol++)
                         {
                             // セルの値を取得する
                             String sCell = dataGridView1[iCol, iRow].Value.ToString();
@@ -254,7 +247,7 @@ namespace contacts_management_app
                         }
                         // ワーク文字列をファイルに出力する
                         sw.WriteLine(s);
-                        //}
+                    
                     }
                     msg = "CSV出力が完了しました。";
                     MessageBox.Show(msg, "情報", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -324,25 +317,6 @@ namespace contacts_management_app
 
         }
 
-        private static bool IsInputEmpty(TextBox inputTextboxt)
-        {
-            return inputTextboxt.Text == "";
-        }
-
-        public static class RegexUtils
-        {
-            /// <summary>
-            /// 指定された文字列が電話番号かどうかを返します
-            /// </summary>
-            public static bool IsPhoneNumber(string input)
-            {
-                if (string.IsNullOrEmpty(input))
-                {
-                    return false;
-                }
-                return Regex.IsMatch(input, @"^[0-9]+$");
-            }
-        }
 
 
         private void TextBox4_button_TextChanged(object sender, EventArgs e)
@@ -421,7 +395,6 @@ namespace contacts_management_app
 
                 // SQL文をセットする
                 string query = String.Format(@"DELETE FROM contacts WHERE ID = @ID");
-                // string query = String.Format(@"SELECT * FROM contacts");
                 try
                 {
 
@@ -432,12 +405,8 @@ namespace contacts_management_app
                     using (SqlCommand cmd = con.CreateCommand())
                     {
 
-
-
                         // コネクションをオープンする
                         con.Open();
-
-
 
                         // データ削除のSQLを実行します。
                         cmd.CommandText = query;
@@ -460,22 +429,16 @@ namespace contacts_management_app
                 }
 
 
-
-
-
             }
 
         }
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        //private void dataGridView1_DataSourceChanged(object sender, EventArgs e)
-        //private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            //DataGridViewButtonColumn column = new DataGridViewButtonColumn();
 
             DataGridView dgv = (DataGridView)sender;
 
             //"Button"列ならば、ボタンがクリックされた
-            if (dgv.Columns[e.ColumnIndex].Name == "EditButton")
+            if (dgv.Columns[e.ColumnIndex].Name == "編集")
             {
                 //編集ボタンが押された行を編集可能にする
                 dgv.Rows[e.RowIndex].ReadOnly = false;
@@ -489,16 +452,26 @@ namespace contacts_management_app
                 //dgv[e.ColumnIndex, e.RowIndex].Style.SelectionBackColor = Color.Red;
 
                 //TODO:datagridview全非表示のため、クリックしたcolumnButton(編集)を非表示にする
+               
                 //ボタン非表示
-                //dgv.Visible = false;
+                dgv.Columns[5].Visible = false;
+                dgv.Columns[6].Visible = true;
+                dgv.Columns[7].Visible = true;
 
             }
+
             //"Button"列ならば、ボタンがクリックされた
-            else if (dgv.Columns[e.ColumnIndex].Name == "UpdateButton")
+            else if (dgv.Columns[e.ColumnIndex].Name == "更新")
             {
                 //各セルの値を取得する
                 //dataGridView dgv = SelectedCells(0).RowIndex;
-                
+                dgv.Columns[5].Visible = true;
+
+                dgv.Rows[e.RowIndex].ReadOnly = true;
+                //for (int i = 0; i < dataGridView1.RowCount; i++)
+                //{
+                //    dataGridView1.Rows[i].ReadOnly = true;
+                //}
                 //// 接続文字列を指定してデータベースを指定
                 SqlConnection con = new("Data Source=DSP417; Initial Catalog=test_take; uid=sql_takemiya; pwd=sql_takemiya");
                 // データ更新のSQL
@@ -530,7 +503,7 @@ namespace contacts_management_app
                         //ContactsTable dt = DBaccesser.GetData();
                         dt = DBaccesser.GetData();
                         dataGridView1.DataSource = dt;
-
+                        
                     }
                 }
                 // 例外が発生した場合
@@ -541,9 +514,15 @@ namespace contacts_management_app
                 }
             }
 
-            else if (dgv.Columns[e.ColumnIndex].Name == "CancelButton")
+            else if (dgv.Columns[e.ColumnIndex].Name == "キャンセル")
             {
-                return;
+                dgv.Columns[5].Visible = true;
+                dgv.Rows[e.RowIndex].ReadOnly = true;
+
+                //for (int i = 0; i < dataGridView1.RowCount; i++)
+                //{
+                //    dataGridView1.Rows[i].ReadOnly = true;
+                //}
             }
 
         }
@@ -558,17 +537,17 @@ namespace contacts_management_app
             }
         }
 
-        //private void dataGridView1_CellMouseLeave(object sender, DataGridViewCellEventArgs e)
+        //private void dataGridView1_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
         //{
-        //    //ヘッダー以外のセル
-        //    if (e.ColumnIndex >= 0 && e.RowIndex >= 0)
+        //    DataGridView dgv = (DataGridView)sender;
+        //    //編集できるか判断する
+        //    if (dgv.Columns[e.ColumnIndex].Name == "Column1" &&
+        //        !(bool)dgv["Column2", e.RowIndex].Value)
         //    {
-        //        DataGridView dgv = (DataGridView)sender;
-        //        //セルスタイルを元に戻す
-        //        //セルスタイルを削除するなら、nullを設定してもよい
-        //        dgv[e.ColumnIndex, e.RowIndex].Style.BackColor = Color.Empty;
-        //        dgv[e.ColumnIndex, e.RowIndex].Style.SelectionBackColor = Color.Empty;
+        //        //編集できないようにする
+        //        e.Cancel = true;
         //    }
+
         //}
     }
 
