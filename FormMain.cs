@@ -478,8 +478,8 @@ namespace contacts_management_app
                 // データ更新のSQL
                 DBaccesser.UpdateData();
 
-                string query = String.Format(@"UPDATE contacts SET NAME = '近藤'  WHERE ID = '1058'");
-                //string query = String.Format(@"UPDATE contacts SET NAME= '堀江'  WHERE ID = '1057'");
+                string query = String.Format(@"UPDATE contacts set NAME = @NAME, TEL = @TEL, MAIL = @MAIL, MEMO = @MEME WHERE ID = @ID, NAME = @NAME,MAIL = @MAIL, MEMO = @MEME");
+                //string query = String.Format(@"UPDATE contacts SET NAME= '堀江'  WHERE ID = '1057'")
                 try
                 {
                     // コマンドを取得する
@@ -491,9 +491,12 @@ namespace contacts_management_app
 
                         //// データ更新のSQLを実行します
                         cmd.CommandText = query;
-                        //cmd.Parameters.Add(new SqlParameter("@ID", sqlDbType.Int, 4, "ID");
-                        //cmd.Parameters.Add(new SqlParameter("@NAME", sqlDbType.NVarChar, 50, "NAME");
-                        //var result = cmd.ExecuteNonQuery();
+                        cmd.Parameters.Add(new SqlParameter("@ID", SqlDbType.Int, (int) dataGridView1.CurrentRow.Cells[0].Value));
+                        cmd.Parameters.Add(new SqlParameter("@NAME", SqlDbType.NVarChar, (int) dataGridView1.CurrentRow.Cells[0].Value));
+                        cmd.Parameters.Add(new SqlParameter("@TEL", SqlDbType.NVarChar, (int) dataGridView1.CurrentRow.Cells[0].Value));
+                        cmd.Parameters.Add(new SqlParameter("@MAIL", SqlDbType.NVarChar, (int) dataGridView1.CurrentRow.Cells[0].Value));
+                        cmd.Parameters.Add(new SqlParameter("@MEMO", SqlDbType.NVarChar, (int) dataGridView1.CurrentRow.Cells[0].Value));
+                        var result = cmd.ExecuteNonQuery();
                         //レコードを削除するためのSQL文を作成
                         //string Delete_SQL = "delete from contacts where NAME = '武宮勇貴'";
 
