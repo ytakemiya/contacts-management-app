@@ -114,7 +114,7 @@ namespace contacts_management_app.Class
                 connection.Open();
 
                 //command.CommandText = @"UPDATE contacts SET ID = @ID, NAME = @NAME, TEL = @TEL, MAIL = @MAIL, MEMO = @MEME WHERE ID = @ID, NAME = @NAME, TEL = @TEL, MAIL = @MAIL, MEMO = @MEME";
-                command.CommandText = @"UPDATE contacts SET NAME= '堀江'  WHERE ID = '1057'";
+                command.CommandText = @"UPDATE contacts SET NAME= '近藤'  WHERE ID = '1058'";
                 // SQLの実行
                 command.ExecuteNonQuery();
             }

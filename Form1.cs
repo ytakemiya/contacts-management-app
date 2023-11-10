@@ -40,7 +40,7 @@ namespace contacts_management_app
         private void button1_Click(object sender, EventArgs e)
         {
 
-            label1.Text = Convert.ToString(Convert.ToInt32(textBox2.Text) + Convert.ToInt32(textBox1.Text));
+            //label1.Text = Convert.ToString(Convert.ToInt32(textBox2.Text) + Convert.ToInt32(textBox1.Text));
         }
     }
 }

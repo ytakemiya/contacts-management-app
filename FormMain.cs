@@ -95,7 +95,7 @@ namespace contacts_management_app
                 dataGridView1.Rows[i].ReadOnly = true;
             }
             //dgv.Rows[e.RowIndex].ReadOnly = false;
-            
+
         }
 
         /// <summary>
@@ -204,7 +204,7 @@ namespace contacts_management_app
                     // 行ループ
                     for (int iCol = 0; iCol < dataGridView1.Columns["編集"].Index; iCol++)
                     {
-                        
+
                         // ヘッダーの値を取得する
                         String sCell = dataGridView1.Columns[iCol].HeaderCell.Value.ToString();
 
@@ -247,7 +247,7 @@ namespace contacts_management_app
                         }
                         // ワーク文字列をファイルに出力する
                         sw.WriteLine(s);
-                    
+
                     }
                     msg = "CSV出力が完了しました。";
                     MessageBox.Show(msg, "情報", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -437,22 +437,24 @@ namespace contacts_management_app
 
             DataGridView dgv = (DataGridView)sender;
 
+
             //"Button"列ならば、ボタンがクリックされた
             if (dgv.Columns[e.ColumnIndex].Name == "編集")
             {
+                //セルスタイルを変更する
+                dgv[e.ColumnIndex, e.RowIndex].Style.BackColor = Color.Red;
+                dgv[e.ColumnIndex, e.RowIndex].Style.SelectionBackColor = Color.Red;
                 //編集ボタンが押された行を編集可能にする
                 dgv.Rows[e.RowIndex].ReadOnly = false;
                 //行単位で選択をする
                 dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
 
                 //ヘッダーを含まないすべてのセルの背景色を黄色にする
-                dgv.RowsDefaultCellStyle.BackColor = Color.Yellow;
-                //セルスタイルを変更する
-                //dgv[e.ColumnIndex, e.RowIndex].Style.BackColor = Color.Red;
-                //dgv[e.ColumnIndex, e.RowIndex].Style.SelectionBackColor = Color.Red;
+                //dgv.RowsDefaultCellStyle.BackColor = Color.Yellow;
+               
 
                 //TODO:datagridview全非表示のため、クリックしたcolumnButton(編集)を非表示にする
-               
+
                 //ボタン非表示
                 dgv.Columns[5].Visible = false;
                 dgv.Columns[6].Visible = true;
@@ -463,21 +465,20 @@ namespace contacts_management_app
             //"Button"列ならば、ボタンがクリックされた
             else if (dgv.Columns[e.ColumnIndex].Name == "更新")
             {
+                dgv[e.ColumnIndex, e.RowIndex].Style.BackColor = Color.Red;
+                dgv[e.ColumnIndex, e.RowIndex].Style.SelectionBackColor = Color.Red;
                 //各セルの値を取得する
                 //dataGridView dgv = SelectedCells(0).RowIndex;
                 dgv.Columns[5].Visible = true;
 
                 dgv.Rows[e.RowIndex].ReadOnly = true;
-                //for (int i = 0; i < dataGridView1.RowCount; i++)
-                //{
-                //    dataGridView1.Rows[i].ReadOnly = true;
-                //}
+                
                 //// 接続文字列を指定してデータベースを指定
                 SqlConnection con = new("Data Source=DSP417; Initial Catalog=test_take; uid=sql_takemiya; pwd=sql_takemiya");
                 // データ更新のSQL
                 DBaccesser.UpdateData();
 
-                string query = String.Format(@"UPDATE contacts SET Mail= 'komadatai0111@gmail.com'  WHERE ID = '1055'");
+                string query = String.Format(@"UPDATE contacts SET NAME = '近藤'  WHERE ID = '1058'");
                 //string query = String.Format(@"UPDATE contacts SET NAME= '堀江'  WHERE ID = '1057'");
                 try
                 {
@@ -503,7 +504,9 @@ namespace contacts_management_app
                         //ContactsTable dt = DBaccesser.GetData();
                         dt = DBaccesser.GetData();
                         dataGridView1.DataSource = dt;
-                        
+
+                        dgv.Rows[e.RowIndex].ReadOnly = true;
+
                     }
                 }
                 // 例外が発生した場合
@@ -537,18 +540,19 @@ namespace contacts_management_app
             }
         }
 
-        //private void dataGridView1_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
-        //{
-        //    DataGridView dgv = (DataGridView)sender;
-        //    //編集できるか判断する
-        //    if (dgv.Columns[e.ColumnIndex].Name == "Column1" &&
-        //        !(bool)dgv["Column2", e.RowIndex].Value)
-        //    {
-        //        //編集できないようにする
-        //        e.Cancel = true;
-        //    }
-
-        //}
+        private void dataGridView1_CellMouseLeave(object sender, DataGridViewCellEventArgs e)
+        {
+            //ヘッダー以外のセル
+            if (e.ColumnIndex >= 0 && e.RowIndex >= 0)
+            {
+                DataGridView dgv = (DataGridView)sender;
+                //セルスタイルを元に戻す
+                //セルスタイルを削除するなら、nullを設定してもよい
+                dgv[e.ColumnIndex, e.RowIndex].Style.BackColor = Color.Empty;
+                dgv[e.ColumnIndex, e.RowIndex].Style.SelectionBackColor = Color.Empty;
+            }
+        }
+        
     }
 
 }
