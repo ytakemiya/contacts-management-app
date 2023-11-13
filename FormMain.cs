@@ -475,10 +475,19 @@ namespace contacts_management_app
                 
                 //// 接続文字列を指定してデータベースを指定
                 SqlConnection con = new("Data Source=DSP417; Initial Catalog=test_take; uid=sql_takemiya; pwd=sql_takemiya");
-                // データ更新のSQL
-                DBaccesser.UpdateData();
 
-                string query = String.Format(@"UPDATE contacts set NAME = @NAME, TEL = @TEL, MAIL = @MAIL, MEMO = @MEME WHERE ID = @ID, NAME = @NAME,MAIL = @MAIL, MEMO = @MEME");
+
+                // GridViewの選択行の値を変数に入れる
+                string name = "武宮さんタスク：選択されているGridViewのNAMEの値をnameに入れる";
+                string tel = "武宮さんタスク：選択されているGridViewのTELの値をtelに入れる";
+                string mail = "武宮さんタスク：選択されているGridViewのMailの値をmailに入れる";
+                string memo = "武宮さんタスク：選択されているGridViewのMEMOの値をmemoに入れる";
+                int id = 0;         // "武宮さんタスク：選択されているGridViewのIDの値をidに入れる ";
+
+                // データ更新のSQL
+                DBaccesser.UpdateData(name, tel, mail, memo, id);
+
+                string query = String.Format(@"UPDATE contacts SET NAME=@NAME,TEL=@TEL,MAIL=@MAIL,MEMO=@MEMO WHERE ID=@ID");
                 //string query = String.Format(@"UPDATE contacts SET NAME= '堀江'  WHERE ID = '1057'")
                 try
                 {
@@ -491,11 +500,17 @@ namespace contacts_management_app
 
                         //// データ更新のSQLを実行します
                         cmd.CommandText = query;
-                        cmd.Parameters.Add(new SqlParameter("@ID", SqlDbType.Int, (int) dataGridView1.CurrentRow.Cells[0].Value));
-                        cmd.Parameters.Add(new SqlParameter("@NAME", SqlDbType.NVarChar, (int) dataGridView1.CurrentRow.Cells[0].Value));
-                        cmd.Parameters.Add(new SqlParameter("@TEL", SqlDbType.NVarChar, (int) dataGridView1.CurrentRow.Cells[0].Value));
-                        cmd.Parameters.Add(new SqlParameter("@MAIL", SqlDbType.NVarChar, (int) dataGridView1.CurrentRow.Cells[0].Value));
-                        cmd.Parameters.Add(new SqlParameter("@MEMO", SqlDbType.NVarChar, (int) dataGridView1.CurrentRow.Cells[0].Value));
+                        cmd.Parameters.Add(new SqlParameter("@ID", SqlDbType.Int, (int)dataGridView1.CurrentRow.Cells[0].Value));
+                        cmd.Parameters.Add(new SqlParameter("@NAME", SqlDbType.NVarChar, (int)dataGridView1.CurrentRow.Cells[0].Value));
+                        cmd.Parameters.Add(new SqlParameter("@TEL", SqlDbType.NVarChar, (int)dataGridView1.CurrentRow.Cells[0].Value));
+                        cmd.Parameters.Add(new SqlParameter("@MAIL", SqlDbType.NVarChar, (int)dataGridView1.CurrentRow.Cells[0].Value));
+                        cmd.Parameters.Add(new SqlParameter("@MEMO", SqlDbType.NVarChar, (int)dataGridView1.CurrentRow.Cells[0].Value));
+                        //cmd.Parameters.Add(new SqlParameter("@ID", "1047"));
+                        //cmd.Parameters.Add(new SqlParameter("@NAME", "宮本"));
+                        //cmd.Parameters.Add(new SqlParameter("@TEL", "09038472275"));
+                        //cmd.Parameters.Add(new SqlParameter("@MAIL", "miyamot2653@gmal.com"));
+                        //cmd.Parameters.Add(new SqlParameter("@MEMO", "毎日休み"));
+
                         var result = cmd.ExecuteNonQuery();
                         //レコードを削除するためのSQL文を作成
                         //string Delete_SQL = "delete from contacts where NAME = '武宮勇貴'";

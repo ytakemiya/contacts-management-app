@@ -9,6 +9,7 @@ using System.Data.SqlClient;
 using System.Collections;
 using System.Data.Common;
 using System.IO;
+using System.Windows.Forms;
 
 namespace contacts_management_app.Class
 {
@@ -99,7 +100,7 @@ namespace contacts_management_app.Class
                 connection.Close();
             }
         }
-        public static void UpdateData()
+        public static void UpdateData(string name, string tel ,string mail, string memo, int id)
         {
             var table = new DataTable();
             //接続文字列
@@ -113,8 +114,12 @@ namespace contacts_management_app.Class
                 // データベースの接続開始
                 connection.Open();
 
-                //command.CommandText = @"UPDATE contacts SET ID = @ID, NAME = @NAME, TEL = @TEL, MAIL = @MAIL, MEMO = @MEME WHERE ID = @ID, NAME = @NAME, TEL = @TEL, MAIL = @MAIL, MEMO = @MEME";
-                command.CommandText = @"UPDATE contacts SET NAME= '近藤'  WHERE ID = '1058'";
+                command.CommandText = @"UPDATE contacts SET NAME=@NAME,TEL=@TEL,MAIL=@MAIL,MEMO=@MEMO WHERE ID=@ID";
+                command.Parameters.Add(new SqlParameter("@ID", id));
+                command.Parameters.Add(new SqlParameter("@NAME", name));
+                command.Parameters.Add(new SqlParameter("@TEL", tel));
+                command.Parameters.Add(new SqlParameter("@MAIL", mail));
+                command.Parameters.Add(new SqlParameter("@MEMO", memo));
                 // SQLの実行
                 command.ExecuteNonQuery();
             }
@@ -129,5 +134,6 @@ namespace contacts_management_app.Class
                 connection.Close();
             }
         }
+
     }
 }
