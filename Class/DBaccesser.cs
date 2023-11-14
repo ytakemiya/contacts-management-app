@@ -15,6 +15,9 @@ namespace contacts_management_app.Class
 {
     internal class DBaccesser
     {
+
+        private string connectionString = "Data Source=DSP417;Initial Catalog=test_take;User ID=sql_takemiya;Password=sql_takemiya";
+
     ////    public static connectionString_method(strng Dat)
     ////    {
     ////        connectionString_method();
@@ -100,11 +103,11 @@ namespace contacts_management_app.Class
                 connection.Close();
             }
         }
-        public static void UpdateData(string name, string tel ,string mail, string memo, int id)
+        public  void UpdateData(string NAME, string TEL ,string Mail, string Memo, int ID)
         {
             var table = new DataTable();
             //接続文字列
-            var connectionString = "Data Source=DSP417;Initial Catalog=test_take;User ID=sql_takemiya;Password=sql_takemiya";
+            //var connectionString = "Data Source=DSP417;Initial Catalog=test_take;User ID=sql_takemiya;Password=sql_takemiya";
 
             using var connection = new SqlConnection(connectionString);
             using var command = connection.CreateCommand();
@@ -114,12 +117,12 @@ namespace contacts_management_app.Class
                 // データベースの接続開始
                 connection.Open();
 
-                command.CommandText = @"UPDATE contacts SET NAME=@NAME,TEL=@TEL,MAIL=@MAIL,MEMO=@MEMO WHERE ID=@ID";
-                command.Parameters.Add(new SqlParameter("@ID", id));
-                command.Parameters.Add(new SqlParameter("@NAME", name));
-                command.Parameters.Add(new SqlParameter("@TEL", tel));
-                command.Parameters.Add(new SqlParameter("@MAIL", mail));
-                command.Parameters.Add(new SqlParameter("@MEMO", memo));
+                command.CommandText = @"UPDATE contacts SET NAME=@NAME,TEL=@TEL,Mail=@Mail,Memo=@Memo WHERE ID=@ID";
+                command.Parameters.Add(new SqlParameter("@ID", ID));
+                command.Parameters.Add(new SqlParameter("@NAME", NAME));
+                command.Parameters.Add(new SqlParameter("@TEL", TEL));
+                command.Parameters.Add(new SqlParameter("@Mail", Mail));
+                command.Parameters.Add(new SqlParameter("@Memo", Memo));
                 // SQLの実行
                 command.ExecuteNonQuery();
             }
