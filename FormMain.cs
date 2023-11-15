@@ -22,7 +22,8 @@ using Microsoft.VisualBasic.ApplicationServices;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolBar;
 using System.IO;
-
+using System.Drawing.Text;
+using System.Security.AccessControl;
 
 namespace contacts_management_app
 {
@@ -33,6 +34,7 @@ namespace contacts_management_app
 
         ContactsTable ContactsTable1;
         ContactsTable dt;
+
 
 
         public object ContactsTable { get; private set; }
@@ -46,22 +48,22 @@ namespace contacts_management_app
 
         private void TextBox1_TextChanged(object sender, EventArgs e)
         {
+
         }
+
+
 
         /// <summary>
         /// dataGridView1に連絡先データをバインド
         /// </summary>
-        public void ShowAllContacts()
-        {
+        public void ShowAllContacts(int a = 1)
+        { 
+
             // DBから連絡先データを持ってくる
             //ContactsTable dt = DBaccesser.GetData();
             dt = DBaccesser.GetData();
             dataGridView1.DataSource = dt;
 
-
-            // データを追加
-            // ContactList contactlist = new ContactList();
-            // dataGridView1.DataSource = contactlist.Data;
             //DataGridViewButtonColumnの作成
             DataGridViewButtonColumn column = new DataGridViewButtonColumn();
             DataGridViewButtonColumn column1 = new DataGridViewButtonColumn();
@@ -83,6 +85,7 @@ namespace contacts_management_app
             dataGridView1.Columns[2].HeaderText = "電話番号";
             dataGridView1.Columns[3].HeaderText = "メール";
             dataGridView1.Columns[4].HeaderText = "メモ欄";
+
             //DataGridViewに追加する
             dataGridView1.Columns.Add(column);
             dataGridView1.Columns.Add(column1);
@@ -105,7 +108,7 @@ namespace contacts_management_app
         /// <param name="e"></param>
         private void Top_Load(object sender, EventArgs e)
         {
-            // dataGridView1に連絡先データをバインド
+            //dataGridView1に連絡先データをバインド
             ShowAllContacts();
             ScreenTransitionTo(dataGridView1);
             dataGridView1.AutoGenerateColumns = false;
@@ -172,7 +175,7 @@ namespace contacts_management_app
                 }
                 else
                 {
-                    // キャンセルの場合は何もしない
+                    return;
                 }
                 string msg = "";
 
@@ -314,6 +317,10 @@ namespace contacts_management_app
                     DBaccesser.GetData(excuteQuery);
             dataGridView1.DataSource = dt;
 
+            dataGridView1.Columns["編集"].Visible = true;
+            dataGridView1.Columns["更新"].Visible = false;
+            dataGridView1.Columns["キャンセル"].Visible = false;
+
 
         }
 
@@ -379,18 +386,10 @@ namespace contacts_management_app
                 }
                 dt.Rows.RemoveAt(dataGridView1.SelectedRows[0].Index);
 
-                //削除するかユーザーに確認する
-                //if (MessageBox.Show("この行を削除しますか？",
-                //    "削除の確認",
-                //    MessageBoxButtons.OKCancel,
-                //    MessageBoxIcon.Question) != DialogResult.OK)
-                //{
-                //    return;
-                //}
 
 
                 // 接続文字列
-                SqlConnection con = new("Data Source=DSP417; Initial Catalog=test_take; uid=sql_takemiya; pwd=sql_takemiya");
+                SqlConnection con = new("Data Source=DSP417; Initial Catalog=test_take; uid=sql_takemiya; pwd=ty21133202");
 
 
                 // SQL文をセットする
@@ -444,22 +443,21 @@ namespace contacts_management_app
                 //セルスタイルを変更する
                 dgv[e.ColumnIndex, e.RowIndex].Style.BackColor = Color.Red;
                 dgv[e.ColumnIndex, e.RowIndex].Style.SelectionBackColor = Color.Red;
-                //編集ボタンが押された行を編集可能にする
-                dgv.Rows[e.RowIndex].ReadOnly = false;
+               
                 //行単位で選択をする
                 dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
 
                 //ヘッダーを含まないすべてのセルの背景色を黄色にする
                 //dgv.RowsDefaultCellStyle.BackColor = Color.Yellow;
 
-
-                //TODO:datagridview全非表示のため、クリックしたcolumnButton(編集)を非表示にする
-
                 //ボタン非表示
                 //[5]編集[6]更新[7]キャンセル
                 dgv.Columns["編集"].Visible = false;
                 dgv.Columns["更新"].Visible = true;
                 dgv.Columns["キャンセル"].Visible = true;
+                //編集ボタンが押された行を編集可能にする
+                dgv.Rows[e.RowIndex].ReadOnly = false;
+
 
             }
 
@@ -468,15 +466,7 @@ namespace contacts_management_app
             {
                 dgv[e.ColumnIndex, e.RowIndex].Style.BackColor = Color.Red;
                 dgv[e.ColumnIndex, e.RowIndex].Style.SelectionBackColor = Color.Red;
-                //各セルの値を取得する
-                //dataGridView dgv = SelectedCells(0).RowIndex;
-                dgv.Columns["編集"].Visible = true;
-
-                dgv.Rows[e.RowIndex].ReadOnly = true;
-                
-                //// 接続文字列を指定してデータベースを指定
-                SqlConnection con = new("Data Source=DSP417; Initial Catalog=test_take; uid=sql_takemiya; pwd=sql_takemiya");
-
+               
 
                 // GridViewの選択行の値を変数に入れる
                 string NAME = (string)dataGridView1.CurrentRow.Cells[1].Value;
@@ -491,7 +481,7 @@ namespace contacts_management_app
                 //int id = 0;         // "武宮さんタスク：選択されているGridViewのIDの値をidに入れる ";
 
                 // データ更新のSQL
-                DBaccesser da = new DBaccesser(); 
+                DBaccesser da = new DBaccesser();
                 da.UpdateData(NAME, TEL, Mail, Memo, ID);
 
                 string query = String.Format(@"UPDATE contacts SET NAME=@NAME,TEL=@TEL,Mail=@Mail,Memo=@Memo WHERE ID=@ID");
@@ -500,67 +490,21 @@ namespace contacts_management_app
                 dt = DBaccesser.GetData();
                 dataGridView1.DataSource = dt;
 
+                dgv.Columns["編集"].Visible = true;
+                dgv.Columns["更新"].Visible = false;
+                dgv.Columns["キャンセル"].Visible = false;
                 dgv.Rows[e.RowIndex].ReadOnly = true;
-                //try
-                //{
-                // コマンドを取得する
-                //using (SqlCommand cmd = con.CreateCommand())
-                //{
 
-                // コネクションをオープンする
-                //con.Open();
-
-                //// データ更新のSQLを実行します
-                //cmd.CommandText = query;
-                //cmd.Parameters.Add(new SqlParameter("@ID", SqlDbType.Int, (int)dataGridView1.CurrentRow.Cells[0].Value));
-                //cmd.Parameters.Add(new SqlParameter("@NAME", SqlDbType.NVarChar, (int) dataGridView1.CurrentRow.Cells[1].Value));
-                //cmd.Parameters.Add(new SqlParameter("@TEL", SqlDbType.NVarChar, (int)dataGridView1.CurrentRow.Cells[2].Value));
-                //cmd.Parameters.Add(new SqlParameter("@MAIL", SqlDbType.NVarChar, (int)dataGridView1.CurrentRow.Cells[3].Value));
-                //cmd.Parameters.Add(new SqlParameter("@MEMO", SqlDbType.NVarChar, (int)dataGridView1.CurrentRow.Cells[4].Value));
-                //cmd.Parameters.Add(new SqlParameter("@ID", ID));
-                //cmd.Parameters.Add(new SqlParameter("@NAME", NAME));
-                //cmd.Parameters.Add(new SqlParameter("@TEL", TEL));
-                //cmd.Parameters.Add(new SqlParameter("@Mail", Mail));
-                //cmd.Parameters.Add(new SqlParameter("@Memo", Memo));
-                //cmd.Parameters.Add(new SqlParameter("@ID", "1047"));
-                //cmd.Parameters.Add(new SqlParameter("@NAME", "宮本"));
-                //cmd.Parameters.Add(new SqlParameter("@TEL", "09038472275"));
-                //cmd.Parameters.Add(new SqlParameter("@MAIL", "miyamot2653@gmal.com"));
-                //cmd.Parameters.Add(new SqlParameter("@MEMO", "毎日休み"));
-
-                //var result = cmd.ExecuteNonQuery();
-                //レコードを削除するためのSQL文を作成
-                //string Delete_SQL = "delete from contacts where NAME = '武宮勇貴'";
-
-                //すでにあるMySQLコマンドのSQL文を差し替え
-                //cmd.CommandText = Delete_SQL;
-                //ShowAllContacts();
-                // DBから連絡先データを持ってくる
-                //ContactsTable dt = DBaccesser.GetData();
-                //dt = DBaccesser.GetData();
-                        //dataGridView1.DataSource = dt;
-
-                        //dgv.Rows[e.RowIndex].ReadOnly = true;
-
-                    //}
-                //}
-                // 例外が発生した場合
-                //catch (SqlException ex)
-                //{
-                    // 例外の内容を表示します。
-                   // Console.WriteLine(ex);
-                //}
             }
 
             else if (dgv.Columns[e.ColumnIndex].Name == "キャンセル")
             {
                 dgv.Columns["編集"].Visible = true;
+                dgv.Columns["更新"].Visible = false;
+                dgv.Columns["キャンセル"].Visible = false;
                 dgv.Rows[e.RowIndex].ReadOnly = true;
 
-                //for (int i = 0; i < dataGridView1.RowCount; i++)
-                //{
-                //    dataGridView1.Rows[i].ReadOnly = true;
-                //}
+
             }
 
         }
@@ -586,10 +530,10 @@ namespace contacts_management_app
                 dgv[e.ColumnIndex, e.RowIndex].Style.BackColor = Color.Empty;
                 dgv[e.ColumnIndex, e.RowIndex].Style.SelectionBackColor = Color.Empty;
 
-                
+
             }
         }
-        
+
     }
 
 }

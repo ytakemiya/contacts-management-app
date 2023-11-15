@@ -16,7 +16,7 @@ namespace contacts_management_app.Class
     internal class DBaccesser
     {
 
-        private string connectionString = "Data Source=DSP417;Initial Catalog=test_take;User ID=sql_takemiya;Password=sql_takemiya";
+        private string connectionString = "Data Source=DSP417;Initial Catalog=test_take;User ID=sql_takemiya;Password=ty21133202";
 
     ////    public static connectionString_method(strng Dat)
     ////    {
@@ -29,10 +29,10 @@ namespace contacts_management_app.Class
         {
             var table = new DataTable();
 
-  
+
             // 接続文字列の取得
             //var connectionString = ConfigurationManager.ConnectionStrings["sqlsvr"].ConnectionString;
-            var connectionString = "Data Source=DSP417;Initial Catalog=test_take;User ID=sql_takemiya;Password=sql_takemiya";
+            var connectionString = "Data Source=DSP417;Initial Catalog=test_take;User ID=sql_takemiya;Password=ty21133202";
 
             //var builder = new SqlConnectionStringBuilder();
             //builder.DataSource = @"DSP417;
@@ -75,7 +75,7 @@ namespace contacts_management_app.Class
 
             var table = new DataTable();
             //接続文字列
-            var connectionString = "Data Source=DSP417;Initial Catalog=test_take;User ID=sql_takemiya;Password=sql_takemiya";
+            var connectionString = "Data Source=DSP417;Initial Catalog=test_take;User ID=sql_takemiya;Password=ty21133202";
 
             using var connection = new SqlConnection(connectionString);
             using var command = connection.CreateCommand();
@@ -103,7 +103,7 @@ namespace contacts_management_app.Class
                 connection.Close();
             }
         }
-        public  void UpdateData(string NAME, string TEL ,string Mail, string Memo, int ID)
+        public void UpdateData(string NAME, string TEL ,string Mail, string Memo, int ID)
         {
             var table = new DataTable();
             //接続文字列
