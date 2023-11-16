@@ -25,6 +25,7 @@ using System.IO;
 using System.Drawing.Text;
 using System.Security.AccessControl;
 using static System.Net.WebRequestMethods;
+using System.Reflection;
 
 namespace contacts_management_app
 {
@@ -51,6 +52,21 @@ namespace contacts_management_app
         {
 
         }
+        private void datagridviewVisible()
+        {
+            dataGridView1.Columns["編集"].Visible = true;
+            dataGridView1.Columns["更新"].Visible = false;
+            dataGridView1.Columns["キャンセル"].Visible = false;
+        }
+        private void datagridviewOnly()
+        {
+            for (int i = 0; i < dataGridView1.RowCount; i++)
+            {
+                dataGridView1.Rows[i].ReadOnly = true;
+            }
+
+        }
+   
 
 
 
@@ -66,14 +82,9 @@ namespace contacts_management_app
             dataGridView1.DataSource = dt;
 
 
-            dataGridView1.Columns["編集"].Visible = true;
-            dataGridView1.Columns["更新"].Visible = false;
-            dataGridView1.Columns["キャンセル"].Visible = false;
+            datagridviewVisible();
 
-            for (int i = 0; i < dataGridView1.RowCount; i++)
-            {
-                dataGridView1.Rows[i].ReadOnly = true;
-            }
+            datagridviewOnly();
 
 
         }
@@ -112,10 +123,8 @@ namespace contacts_management_app
             dataGridView1.Columns["更新"].Visible = false;
             dataGridView1.Columns["キャンセル"].Visible = false;
 
-            for (int i = 0; i < dataGridView1.RowCount; i++)
-            {
-                dataGridView1.Rows[i].ReadOnly = true;
-            }
+            datagridviewOnly();
+         
         }
         
 
@@ -137,6 +146,7 @@ namespace contacts_management_app
 
 
         }
+       
 
         /// <summary>
         /// 追加ボタンクリック
@@ -338,9 +348,9 @@ namespace contacts_management_app
                     DBaccesser.GetData(excuteQuery);
             dataGridView1.DataSource = dt;
 
-            dataGridView1.Columns["編集"].Visible = true;
-            dataGridView1.Columns["更新"].Visible = false;
-            dataGridView1.Columns["キャンセル"].Visible = false;
+            datagridviewVisible();
+
+            datagridviewOnly();
 
 
         }
@@ -452,10 +462,12 @@ namespace contacts_management_app
             }
 
         }
+      
         private void DataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
             DataGridView dgv = (DataGridView)sender;
+        
 
 
             //"Button"列ならば、ボタンがクリックされた
@@ -511,11 +523,13 @@ namespace contacts_management_app
                 dt = DBaccesser.GetData();
                 dataGridView1.DataSource = dt;
 
+
+
                 dgv.Columns["編集"].Visible = true;
                 dgv.Columns["更新"].Visible = false;
                 dgv.Columns["キャンセル"].Visible = false;
-                dgv.Rows[e.RowIndex].ReadOnly = true;
-
+                //dgv.Rows[e.RowIndex].ReadOnly = true;
+                datagridviewOnly();
             }
 
             else if (dgv.Columns[e.ColumnIndex].Name == "キャンセル")
