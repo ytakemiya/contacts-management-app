@@ -167,7 +167,7 @@
             // 
             ExportButton.BackColor = SystemColors.GradientInactiveCaption;
             ExportButton.Location = new Point(0, 43);
-            ExportButton.Margin = new Padding(2, 2, 2, 2);
+            ExportButton.Margin = new Padding(2);
             ExportButton.Name = "ExportButton";
             ExportButton.Size = new Size(160, 24);
             ExportButton.TabIndex = 9;
@@ -238,7 +238,7 @@
             // 
             DeleteButton.ForeColor = Color.Black;
             DeleteButton.Location = new Point(127, 0);
-            DeleteButton.Margin = new Padding(2, 2, 2, 2);
+            DeleteButton.Margin = new Padding(2);
             DeleteButton.Name = "DeleteButton";
             DeleteButton.Size = new Size(78, 21);
             DeleteButton.TabIndex = 19;
@@ -280,8 +280,7 @@
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridView1.Size = new Size(742, 533);
             dataGridView1.TabIndex = 23;
-            //dataGridView1.CellClick += dataGridView1_CellClick;
-            dataGridView1.CellContentClick += dataGridView1_CellContentClick;
+            dataGridView1.CellContentClick += DataGridView1_CellContentClick;
             dataGridView1.CellMouseLeave += dataGridView1_CellMouseLeave;
             dataGridView1.CurrentCellChanged += dataGridView1_CurrentCellChanged;
             // 

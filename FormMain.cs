@@ -24,6 +24,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolBar;
 using System.IO;
 using System.Drawing.Text;
 using System.Security.AccessControl;
+using static System.Net.WebRequestMethods;
 
 namespace contacts_management_app
 {
@@ -34,7 +35,7 @@ namespace contacts_management_app
 
         ContactsTable ContactsTable1;
         ContactsTable dt;
-
+        
 
 
         public object ContactsTable { get; private set; }
@@ -56,14 +57,32 @@ namespace contacts_management_app
         /// <summary>
         /// dataGridView1に連絡先データをバインド
         /// </summary>
-        public void ShowAllContacts(int a = 1)
-        { 
+        public void ShowAllContacts()
+        {
 
             // DBから連絡先データを持ってくる
             //ContactsTable dt = DBaccesser.GetData();
             dt = DBaccesser.GetData();
             dataGridView1.DataSource = dt;
 
+
+            dataGridView1.Columns["編集"].Visible = true;
+            dataGridView1.Columns["更新"].Visible = false;
+            dataGridView1.Columns["キャンセル"].Visible = false;
+
+            for (int i = 0; i < dataGridView1.RowCount; i++)
+            {
+                dataGridView1.Rows[i].ReadOnly = true;
+            }
+
+
+        }
+        private void datagridviewFirstconfig()
+        {
+            // DBから連絡先データを持ってくる
+            //ContactsTable dt = DBaccesser.GetData();
+            dt = DBaccesser.GetData();
+            dataGridView1.DataSource = dt;
             //DataGridViewButtonColumnの作成
             DataGridViewButtonColumn column = new DataGridViewButtonColumn();
             DataGridViewButtonColumn column1 = new DataGridViewButtonColumn();
@@ -97,9 +116,8 @@ namespace contacts_management_app
             {
                 dataGridView1.Rows[i].ReadOnly = true;
             }
-            //dgv.Rows[e.RowIndex].ReadOnly = false;
-
         }
+        
 
         /// <summary>
         /// トップ画面表示後に連絡先データを表示する
@@ -108,8 +126,11 @@ namespace contacts_management_app
         /// <param name="e"></param>
         private void Top_Load(object sender, EventArgs e)
         {
+            
+
             //dataGridView1に連絡先データをバインド
-            ShowAllContacts();
+           
+            datagridviewFirstconfig();
             ScreenTransitionTo(dataGridView1);
             dataGridView1.AutoGenerateColumns = false;
             ContactsTable = new ContactsTable();
@@ -431,7 +452,7 @@ namespace contacts_management_app
             }
 
         }
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void DataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
             DataGridView dgv = (DataGridView)sender;
@@ -443,7 +464,7 @@ namespace contacts_management_app
                 //セルスタイルを変更する
                 dgv[e.ColumnIndex, e.RowIndex].Style.BackColor = Color.Red;
                 dgv[e.ColumnIndex, e.RowIndex].Style.SelectionBackColor = Color.Red;
-               
+
                 //行単位で選択をする
                 dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
 
@@ -466,7 +487,7 @@ namespace contacts_management_app
             {
                 dgv[e.ColumnIndex, e.RowIndex].Style.BackColor = Color.Red;
                 dgv[e.ColumnIndex, e.RowIndex].Style.SelectionBackColor = Color.Red;
-               
+
 
                 // GridViewの選択行の値を変数に入れる
                 string NAME = (string)dataGridView1.CurrentRow.Cells[1].Value;
@@ -533,7 +554,6 @@ namespace contacts_management_app
 
             }
         }
-
     }
 
 }
