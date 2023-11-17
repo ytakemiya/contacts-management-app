@@ -33,8 +33,6 @@ namespace contacts_management_app
     {
 
         private object ultaraGridExcelExpter1;
-
-        ContactsTable ContactsTable1;
         ContactsTable dt;
         
 
@@ -52,13 +50,13 @@ namespace contacts_management_app
         {
 
         }
-        private void datagridviewVisible()
+        private void datagridviewclmVisible()
         {
             dataGridView1.Columns["編集"].Visible = true;
             dataGridView1.Columns["更新"].Visible = false;
             dataGridView1.Columns["キャンセル"].Visible = false;
         }
-        private void datagridviewOnly()
+        private void datagridviewreadOnly()
         {
             for (int i = 0; i < dataGridView1.RowCount; i++)
             {
@@ -78,13 +76,13 @@ namespace contacts_management_app
 
             // DBから連絡先データを持ってくる
             //ContactsTable dt = DBaccesser.GetData();
-            dt = DBaccesser.GetData();
-            dataGridView1.DataSource = dt;
+            this.dt = DBaccesser.GetData();
+            dataGridView1.DataSource = this.dt;
 
 
-            datagridviewVisible();
+            datagridviewclmVisible();
 
-            datagridviewOnly();
+            datagridviewreadOnly();
 
 
         }
@@ -123,7 +121,7 @@ namespace contacts_management_app
             dataGridView1.Columns["更新"].Visible = false;
             dataGridView1.Columns["キャンセル"].Visible = false;
 
-            datagridviewOnly();
+            datagridviewreadOnly();
          
         }
         
@@ -185,22 +183,23 @@ namespace contacts_management_app
         {
             string selectedPath = "";
 
-            using (FolderBrowserDialog dialog = new FolderBrowserDialog())
+            using (FolderBrowserDialog dlg = new FolderBrowserDialog())
             {
                 // 初期選択フォルダーが設定できる①
-                //dialog.SelectedPath = @"C:\User\";
+                //保存先の初期値
+                
                 // ファイル名を指定、取得する②
-                dialog.Description = @"ForOutput.csv";
+                dlg.Description = @"ForOutput.csv";
 
                 // 新しくフォルダを作成を許可する②
-                dialog.ShowNewFolderButton = true;
+                dlg.ShowNewFolderButton = true;
 
                 // ダイアログを表示する。
-                DialogResult result = dialog.ShowDialog();
+                DialogResult result = dlg.ShowDialog();
                 if (result == DialogResult.OK)
                 {
                     // 選択されたフォルダを取得する
-                    selectedPath = dialog.SelectedPath;
+                    selectedPath = dlg.SelectedPath;
 
                     MessageBox.Show(string.Format("{0}が選択されました", selectedPath));
                 }
@@ -219,15 +218,10 @@ namespace contacts_management_app
                     return;
                 }
 
-                //// 確認「はい」でなければ処理を抜ける
-                //msg = "CSVファイルを出力します。" + "\n" + "宜しいですか？";
-                //MessageBox.Show(msg, "確認", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                //if (result != DialogResult.Yes)
-                //{
-                //    return;
-                //}
+                
+
                 //UTF8の上書きモードでファイルを開く
-                using (StreamWriter sw = new StreamWriter(selectedPath + @"ForOutput.csv", false, System.Text.Encoding.UTF8))
+                using (StreamWriter sw = new StreamWriter(selectedPath + @"\ForOutput.csv", false, System.Text.Encoding.UTF8))
                 {
                     // ワーク文字列言
                     string s = "";
@@ -315,6 +309,11 @@ namespace contacts_management_app
             return sCell;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SearchButton_Click(object sender, EventArgs e)
         {
             //sawai
@@ -344,58 +343,20 @@ namespace contacts_management_app
             //  "SELECT * FROM contacts WHERE TEL LIKE '%{textBox1.Text}%'")"
             //  "SELECT * FROM contacts WHERE NAME LIKE '%{textBox1.Text}%'""
             //SQL実行させる
-            ContactsTable dt =
-                    DBaccesser.GetData(excuteQuery);
+            this. dt = DBaccesser.GetData(excuteQuery);
+
             dataGridView1.DataSource = dt;
 
-            datagridviewVisible();
+            datagridviewclmVisible();
 
-            datagridviewOnly();
+            datagridviewreadOnly();
 
 
         }
 
 
 
-        private void TextBox4_button_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void Button1_Click_1(object sender, EventArgs e)
-        {
-
-        }
-
-        private void TextBox2_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void TextBox3_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void Label3_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void Label7_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void Tellabel_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void Panel6_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
+        
         private void dataGridView1_Paint(object sender, PaintEventArgs e)
         {
             this.TopMost = true;
@@ -464,7 +425,7 @@ namespace contacts_management_app
         }
       
         private void DataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
+       {
 
             DataGridView dgv = (DataGridView)sender;
         
@@ -485,9 +446,9 @@ namespace contacts_management_app
 
                 //ボタン非表示
                 //[5]編集[6]更新[7]キャンセル
-                dgv.Columns["編集"].Visible = false;
-                dgv.Columns["更新"].Visible = true;
-                dgv.Columns["キャンセル"].Visible = true;
+                dataGridView1.Columns["編集"].Visible = false;
+                dataGridView1.Columns["更新"].Visible = true;
+                dataGridView1.Columns["キャンセル"].Visible = true;
                 //編集ボタンが押された行を編集可能にする
                 dgv.Rows[e.RowIndex].ReadOnly = false;
 
@@ -525,18 +486,14 @@ namespace contacts_management_app
 
 
 
-                dgv.Columns["編集"].Visible = true;
-                dgv.Columns["更新"].Visible = false;
-                dgv.Columns["キャンセル"].Visible = false;
+                datagridviewclmVisible();
                 //dgv.Rows[e.RowIndex].ReadOnly = true;
-                datagridviewOnly();
+                datagridviewreadOnly();
             }
 
             else if (dgv.Columns[e.ColumnIndex].Name == "キャンセル")
             {
-                dgv.Columns["編集"].Visible = true;
-                dgv.Columns["更新"].Visible = false;
-                dgv.Columns["キャンセル"].Visible = false;
+                datagridviewclmVisible();
                 dgv.Rows[e.RowIndex].ReadOnly = true;
 
 

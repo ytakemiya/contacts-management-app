@@ -127,7 +127,7 @@
             Tellabel.Size = new Size(43, 15);
             Tellabel.TabIndex = 11;
             Tellabel.Text = "電話帳";
-            Tellabel.Click += Tellabel_Click;
+            //Tellabel.Click += Tellabel_Click;
             // 
             // label3
             // 
@@ -136,7 +136,7 @@
             label3.Name = "label3";
             label3.Size = new Size(0, 15);
             label3.TabIndex = 10;
-            label3.Click += Label3_Click;
+            //label3.Click += Label3_Click;
             // 
             // label6
             // 
@@ -153,7 +153,7 @@
             label7.Name = "label7";
             label7.Size = new Size(0, 15);
             label7.TabIndex = 14;
-            label7.Click += Label7_Click;
+            //label7.Click += Label7_Click;
             // 
             // label9
             // 
@@ -254,7 +254,7 @@
             panelMain.Size = new Size(742, 536);
             panelMain.TabIndex = 24;
             panelMain.Visible = false;
-            panelMain.Paint += Panel6_Paint;
+            //panelMain.Paint += Panel6_Paint;
             // 
             // dataGridView1
             // 
